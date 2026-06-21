@@ -11,26 +11,40 @@ class TreeNode {
 
 ---
 
+## 🧭 Decision Fork (ask yourself this before writing any code)
+
+> Does the answer for a node need info **from its children**? → **Bottom-Up** (post-order). Recurse first, combine on the way back up.
+>
+> Does the answer need info **from its ancestors**? → **Top-Down** (pre-order). Pass state DOWN as you recurse, decide at the leaves.
+>
+> Do you need the answer **level-by-level**? → **BFS**. Queue, snapshot size before the inner loop.
+>
+> Everything else in this topic is a variant or combination of these three questions.
+
+---
+
 ## Quick Lookup Table (read this first when revisiting after a gap)
 
-| # | Pattern | Key signal in problem statement | Core idea |
-|---|---|---|---|
-| 1 | DFS Bottom-Up | "height", "count", "is balanced", "diameter" — answer depends on subtree results | Recurse first, combine children's results into your own |
-| 2 | DFS Top-Down | "root-to-leaf", "path sum", depends on ancestors | Pass state DOWN as you recurse, decide at leaves |
-| 3 | BFS / Level Order | "level by level", "shortest path in unweighted tree", "rightmost/leftmost per level" | Queue, snapshot size before inner loop |
-| 4 | LCA | "lowest common ancestor", "split point of two nodes" | Bottom-up: both sides found something → I'm the answer |
-| 5 | Construction / Serialization | "build tree from X and Y", "serialize/deserialize" | Use traversal order properties to reconstruct uniquely |
-| 6 | Tree DP (multi-state) | "rob houses", "max path sum with constraint" | Return an array/tuple of states per node, not one value |
-| 7 | BST-specific | Problem says "BST" / values are sorted property usable | Use value comparisons to skip half the tree, or bounds-passing |
-| 8 (bonus) | Trie | "prefix", "autocomplete", "word search dictionary" | Tree keyed by characters, not fixed left/right |
-
-**Fast decision rule:** if the answer for a node needs info **from its children**, you're doing bottom-up (post-order). If the answer for a node needs info **from its ancestors**, you're doing top-down (pre-order, passing state). If you need answers level-by-level, it's BFS. Everything else is a variant or combination of these three.
+| # | Pattern | 🔑 Trigger phrases | ⚓ Anchor problem | Core idea |
+|---|---|---|---|---|
+| 1 | DFS Bottom-Up | "height", "count", "is balanced", "diameter" | Maximum Depth of Binary Tree | Recurse first, combine children's results into your own |
+| 2 | DFS Top-Down | "root-to-leaf", "path sum" | Path Sum | Pass state DOWN as you recurse, decide at leaves |
+| 3 | BFS / Level Order | "level by level", "shortest path (unweighted)", "right/left side view" | Binary Tree Level Order Traversal | Queue, snapshot size before inner loop |
+| 4 | LCA | "lowest common ancestor", "split point of two nodes" | Lowest Common Ancestor of a Binary Tree | Bottom-up: both sides found something → I'm the answer |
+| 5 | Construction / Serialization | "build tree from X and Y", "serialize/deserialize" | Construct Binary Tree from Preorder and Inorder Traversal | Use traversal order properties to reconstruct uniquely |
+| 6 | Tree DP (multi-state) | "rob houses", "max path sum with constraint" | House Robber III | Return an array/tuple of states per node, not one value |
+| 7 | BST-specific | problem says "BST" / sorted property usable | Validate Binary Search Tree | Use value comparisons to skip half the tree, or bounds-passing |
+| 8 (bonus) | Trie | "prefix", "autocomplete", "word search dictionary" | Implement Trie (Prefix Tree) | Tree keyed by characters, not fixed left/right |
 
 ---
 
 ## 1. DFS — Bottom-Up (Post-order: "get info from children, then build your own")
 
 **When to use it:** Whenever a node's answer is computed *from* its subtrees' answers — height, count of nodes, diameter, balanced-check, subtree sum, identical-trees check.
+
+**🔑 Trigger phrases:** "height", "depth", "count nodes", "is balanced", "diameter", "is same tree", "is subtree of".
+
+**⚓ Anchor problem:** Maximum Depth of Binary Tree — if you forget everything else about this pattern, re-derive it from this one.
 
 **Template:**
 ```java
@@ -55,6 +69,9 @@ ReturnType dfs(TreeNode node) {
 - Confusing "value returned to parent" with "final answer to the problem." Sometimes you need a separate instance variable to track a global answer (e.g., Diameter of Binary Tree: you return *height* up the recursion, but track the *diameter* as a side variable updated at every node).
 - Not handling the leaf case distinctly when the combine logic assumes both children exist.
 
+**📝 My Mistakes (fill in as you go):**
+- _Add your own here when you debug something for more than 10 minutes — write down why you got it wrong, not just the fix. This is the section generic notes can't write for you._
+
 **Example problems:** Maximum Depth of Binary Tree, Balanced Binary Tree, Diameter of Binary Tree, Same Tree, Subtree of Another Tree, Count Complete Tree Nodes.
 
 ---
@@ -62,6 +79,10 @@ ReturnType dfs(TreeNode node) {
 ## 2. DFS — Top-Down (Pre-order: "pass info down from parent to children")
 
 **When to use it:** When the answer/condition depends on the path *from the root down* to the current node — root-to-leaf sums, validating constraints that tighten as you go deeper, tracking depth.
+
+**🔑 Trigger phrases:** "root-to-leaf", "path sum", "sum of all paths", "path from root".
+
+**⚓ Anchor problem:** Path Sum — if you forget everything else, rebuild from this.
 
 **Template:**
 ```java
@@ -166,6 +187,9 @@ Dry run, same tree, starting call `dfs(1, [])`:
 
 Final result: `["1->2", "1->3"]` ✓ — correct, and notice there's no `path.remove(...)` anywhere, because each recursive call owns a private copy. That's the whole trade: option A reuses one list and must clean up after itself; option B never shares a list, so there's nothing to clean up, at the cost of an `O(depth)` copy on every single call.
 
+**📝 My Mistakes (fill in as you go):**
+- _Add your own here — e.g. the exact moment you caught (or didn't catch) a shared-state bug like the one above, in your own words._
+
 **Example problems:** Path Sum, Path Sum II (collect actual paths), Sum Root to Leaf Numbers, Validate BST (bounds-passing variant — see Pattern 7).
 
 ---
@@ -173,6 +197,10 @@ Final result: `["1->2", "1->3"]` ✓ — correct, and notice there's no `path.re
 ## 3. BFS / Level Order Traversal
 
 **When to use it:** "Level by level" processing, shortest path in an unweighted tree, right/left side view, zigzag order, level averages.
+
+**🔑 Trigger phrases:** "level by level", "level order", "right side view", "zigzag", "average of each level", "minimum depth" (unweighted shortest path).
+
+**⚓ Anchor problem:** Binary Tree Level Order Traversal.
 
 **Template:**
 ```java
@@ -209,6 +237,9 @@ List<List<Integer>> levelOrder(TreeNode root) {
 - **The #1 BFS bug:** not snapshotting `size` before the loop, or calling `queue.size()` inside the loop condition directly — this silently corrupts level boundaries as children get added mid-loop.
 - Off-by-one when also tracking depth/level number alongside values.
 
+**📝 My Mistakes (fill in as you go):**
+- _Add your own here._
+
 **Example problems:** Binary Tree Level Order Traversal, Binary Tree Right Side View, Average of Levels, Zigzag Level Order Traversal, Minimum Depth of Binary Tree (BFS gives early-exit advantage over DFS here).
 
 ---
@@ -216,6 +247,10 @@ List<List<Integer>> levelOrder(TreeNode root) {
 ## 4. Lowest Common Ancestor (LCA)
 
 **When to use it:** "Find the lowest/deepest node that is an ancestor of both p and q."
+
+**🔑 Trigger phrases:** "lowest common ancestor", "split point of two nodes", "deepest node that is an ancestor of both".
+
+**⚓ Anchor problem:** Lowest Common Ancestor of a Binary Tree.
 
 **General binary tree template:**
 ```java
@@ -253,6 +288,9 @@ TreeNode lcaBST(TreeNode node, TreeNode p, TreeNode q) {
 - Forgetting the base case `node == p || node == q` (not just `node == null`) — this is what lets a node "find itself" without needing to look further down.
 - Using the general recursive version when the BST iterative version is available — unnecessarily slower and uses extra stack space.
 
+**📝 My Mistakes (fill in as you go):**
+- _Add your own here._
+
 **Example problems:** Lowest Common Ancestor of a Binary Tree, Lowest Common Ancestor of a BST.
 
 ---
@@ -260,6 +298,10 @@ TreeNode lcaBST(TreeNode node, TreeNode p, TreeNode q) {
 ## 5. Tree Construction / Serialization
 
 **When to use it:** Building a tree from traversal arrays, or serializing/deserializing a tree to/from a string.
+
+**🔑 Trigger phrases:** "build tree from preorder/inorder", "serialize", "deserialize", "reconstruct the tree".
+
+**⚓ Anchor problem:** Construct Binary Tree from Preorder and Inorder Traversal.
 
 **Serialize/deserialize (preorder + null markers):**
 ```java
@@ -308,6 +350,9 @@ TreeNode build(int[] preorder, int[] inorder, int left, int right) {
 - `preIdx` (or `idx` in deserialize) must be a shared mutable field, not a value re-passed by parameter — it needs to keep advancing across recursive branches in a specific global order.
 - Off-by-one errors in the `left`/`right`/`mid` bounds when splitting the inorder range.
 
+**📝 My Mistakes (fill in as you go):**
+- _Add your own here._
+
 **Example problems:** Construct Binary Tree from Preorder and Inorder Traversal, Serialize and Deserialize Binary Tree.
 
 ---
@@ -315,6 +360,10 @@ TreeNode build(int[] preorder, int[] inorder, int left, int right) {
 ## 6. Tree DP — Multi-State Return (need more than one value from children)
 
 **When to use it:** When a single number per node isn't enough — you need to track multiple scenarios and let the parent pick the best combination (classic dynamic programming, just tree-shaped).
+
+**🔑 Trigger phrases:** "rob houses" (tree-shaped), "max path sum with a constraint", "best score with adjacent restriction".
+
+**⚓ Anchor problem:** House Robber III.
 
 **Template (House Robber III style — "rob this node" vs "don't rob"):**
 ```java
@@ -340,6 +389,9 @@ int[] dfs(TreeNode node) {
 - Collapsing two states into one number too early in the recursion — you can't un-lose that information later.
 - Forgetting that "don't rob this node" must let each child independently choose its own best option (not force left and right to agree on rob/not-rob).
 
+**📝 My Mistakes (fill in as you go):**
+- _Add your own here._
+
 **Example problems:** House Robber III, Binary Tree Maximum Path Sum (bottom-up return of "best single-direction path through this node" + a side global-max variable, similar to Diameter in Pattern 1).
 
 ---
@@ -347,6 +399,10 @@ int[] dfs(TreeNode node) {
 ## 7. Binary Search Tree (BST)-Specific Patterns
 
 **When to use it:** Problem explicitly involves a BST, or you can exploit the sorted-order property (inorder traversal of a BST = sorted sequence).
+
+**🔑 Trigger phrases:** "BST", "binary search tree", "kth smallest", problem mentions values are sorted/ordered.
+
+**⚓ Anchor problem:** Validate Binary Search Tree.
 
 **Validate BST (bounds-passing, top-down variant):**
 ```java
@@ -378,6 +434,9 @@ TreeNode insert(TreeNode root, int val) {
 **Common pitfalls:**
 - **The #1 BST-validation bug:** only checking a node against its *immediate* children (`left.val < node.val < right.val`) instead of propagating bounds further down — this misses violations from grandchildren two or more levels deep.
 
+**📝 My Mistakes (fill in as you go):**
+- _Add your own here._
+
 **Example problems:** Validate Binary Search Tree, Insert into a BST, Delete Node in a BST, Kth Smallest Element in a BST (inorder traversal + counter).
 
 ---
@@ -385,6 +444,10 @@ TreeNode insert(TreeNode root, int val) {
 ## 8 (bonus). Trie / Prefix Tree
 
 Different shape from the rest — each node has a map of children keyed by *character*, not fixed left/right — but commonly grouped with tree problems.
+
+**🔑 Trigger phrases:** "prefix", "autocomplete", "dictionary of words", "word search II".
+
+**⚓ Anchor problem:** Implement Trie (Prefix Tree).
 
 ```java
 class TrieNode {
@@ -427,6 +490,9 @@ class Trie {
 
 **Common pitfalls:**
 - Forgetting to mark `isWord = true` on insert — `search("cat")` can incorrectly return false if "cat" is also a prefix of another inserted word like "catalog," because the node exists but isn't flagged as a complete word.
+
+**📝 My Mistakes (fill in as you go):**
+- _Add your own here._
 
 **Example problems:** Implement Trie (Prefix Tree), Word Search II, Design Add and Search Words Data Structure.
 
