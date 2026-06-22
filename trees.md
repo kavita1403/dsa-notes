@@ -439,6 +439,27 @@ TreeNode insert(TreeNode root, int val) {
 
 **Example problems:** Validate Binary Search Tree, Insert into a BST, Delete Node in a BST, Kth Smallest Element in a BST (inorder traversal + counter).
 
+I used to get confused about the purpose of return root in BST insertion and deletion.
+After dry-running the code, I realized that whenever a node is inserted or deleted in a subtree, return root passes the updated subtree root back to its parent.
+Each recursive call returns the modified subtree root, allowing parent nodes to reconnect their left or right child correctly.
+Once all recursive calls finish, the original root (with all modifications applied) is returned as the final result.
+
+Key Insight:
+In recursive BST operations, return root is not just returning a value—it is propagating the updated subtree structure back up the recursion stack so that the entire tree remains connected correctly.
+
+In BST deletion, I initially forgot to handle the case where the node to be deleted has exactly one child. In this scenario, we simply return the non-null child so that the parent can directly connect to it.
+I struggled to identify the handling of key == root.val. I kept thinking only about the traversal cases (key < root.val and key > root.val) and overlooked that the else block naturally represents the case where the target node has been found.
+Once key == root.val, the focus should shift from searching to deleting. Inside this else block, I need to handle the three deletion scenarios:
+Node has no children → return null.
+Node has one child → return the non-null child.
+Node has two children → replace with inorder successor (or predecessor) and delete that node recursively.
+
+Key Insight:
+
+Before reaching key == root.val, the algorithm is in search mode.
+After reaching key == root.val, the algorithm is in deletion mode.
+Thinking of deletion as Search → Found Node → Handle 3 Cases makes the logic much easier to remember during interviews.
+
 ---
 
 ## 8 (bonus). Trie / Prefix Tree
