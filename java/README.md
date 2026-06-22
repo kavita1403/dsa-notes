@@ -11,7 +11,8 @@ Deep-dive Q&A covering everything a senior Java engineer (8+ YoE) should be able
 | 3 | [`03-concurrency.md`](./03-concurrency.md) | synchronized, volatile, JMM, locks, executors, CompletableFuture, virtual threads | This separates seniors from mid-level. Memorize the JMM rules. |
 | 4 | [`04-jvm-memory.md`](./04-jvm-memory.md) | Heap/stack, GC algorithms (G1/ZGC), classloading, JIT, OOM debugging | Required for any prod-grade work. Expect deep questions on G1 + ZGC. |
 | 5 | [`05-streams-functional.md`](./05-streams-functional.md) | Lambdas, Stream API internals, collectors, parallel streams, Optional | Java 8 features are now 11 years old — interviewers expect mastery. |
-| 6 | [`06-modern-java.md`](./06-modern-java.md) | Records, sealed classes, pattern matching, text blocks, virtual threads (Java 9-21) | What's new — and why each feature exists. |
+| 6 | [`06-modern-java.md`](./06-modern-java.md) | Records, sealed classes, pattern matching, text blocks, virtual threads (Java 9-21) | What's new and why each feature exists. |
+| 7 | [`07-comparator-cheatsheet.md`](./07-comparator-cheatsheet.md) | Comparator deep-dive: PriorityQueue, Collections, int[], int[][], multi-criteria | The one note that ends all Comparator confusion. Quick reference. |
 
 ##  How to use these notes
 
