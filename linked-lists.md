@@ -733,6 +733,19 @@ dummy.next = head;
 ListNode cur = dummy;
 // ... operate on dummy.next, never on head directly ...
 return dummy.next;
+
+When should you immediately think of a Dummy Node?
+
+Whenever you hear questions like:
+
+✅ Delete a node
+✅ Remove duplicates
+✅ Merge lists
+✅ Reverse part of a list
+✅ Partition a list
+✅ Insert before the first node
+✅ The head may change
+✅ The list may be empty (head == null)
 ```
 
 **Benefits:**
