@@ -714,3 +714,158 @@ public int myAtoi(String s) {
 - `String.equals` vs `==`: `==` compares references. Always `.equals` for string content.
 - `'a' - 'A' = 32`: case-conversion arithmetic. `Character.toLowerCase()` is clearer and handles unicode.
 - For unicode (non-ASCII), `s.length()` returns CODE UNITS, not characters. Surrogate pairs count as 2. Use `s.codePoints()` for true character iteration.
+- # Read-Write Two Pointer Pattern
+**Anchor Problem:** LC 443 — String Compression
+
+---
+
+## When to use this pattern
+Any problem that says:
+- "modify array **in-place**"
+- "return the new length"
+- "do it in O(1) extra space"
+
+The moment you see these constraints, reach for read-write two pointers.
+
+---
+
+## Core Mental Model
+
+```
+read  → scans input left to right, never goes back
+write → only advances when you have something to commit
+
+KEY INVARIANT: write <= read (always)
+```
+
+Because `write` never overtakes `read`, you never overwrite data you haven't read yet. This is why in-place modification is safe.
+
+```
+Input:  [a, a, a, b, b, c]
+         r                    read scans
+         w                    write waits
+
+After first group (aaa):
+write commits: a, 3
+read is now at: b
+```
+
+---
+
+## General Template
+
+```java
+int read = 0;
+int write = 0;
+
+while (read < arr.length) {
+    // 1. capture current element
+    char current = arr[read];
+
+    // 2. count or process the group
+    int count = 0;
+    while (read < arr.length && arr[read] == current) {
+        read++;
+        count++;
+    }
+    // read now points to NEXT unprocessed element
+
+    // 3. write result back into arr at write pointer
+    arr[write++] = current;
+
+    // 4. write any metadata (count, transformed value, etc.)
+    //    only if needed — check problem constraints
+    if (count > 1) {
+        for (char c : String.valueOf(count).toCharArray()) {
+            arr[write++] = c;
+        }
+    }
+}
+
+return write; // new logical length
+```
+
+---
+
+## String Compression — Annotated Solution
+
+```java
+public int compress(char[] chars) {
+    int write = 0;
+    int read = 0;
+
+    while (read < chars.length) {
+        char current = chars[read];  // start of a new group
+        int count = 0;
+
+        // inner loop: consume entire group of same chars
+        while (read < chars.length && chars[read] == current) {
+            read++;    // move read forward
+            count++;   // tally how many
+        }
+        // read now sits at start of NEXT group (or out of bounds)
+
+        chars[write++] = current;   // always write the char
+
+        if (count > 1) {            // only write count if > 1 (problem rule)
+            for (char c : String.valueOf(count).toCharArray()) {
+                chars[write++] = c; // write each digit separately
+            }
+        }
+    }
+
+    return write;
+}
+```
+
+---
+
+## Why NOT `result += current + count`
+
+Two reasons:
+
+1. **In-place constraint violated** — concatenation allocates new memory. Problem requires O(1) space.
+2. **Format is wrong** — `"a" + 2` gives `"a2"` as a string, but you need individual chars `['a','2']` written back into the array.
+
+Always ask yourself: *does the problem say in-place or O(1) space?* If yes, no string building.
+
+---
+
+## Edge Cases to always check for this pattern
+
+| Edge Case | What to verify |
+|---|---|
+| Single character `['a']` | count == 1 → don't write count, just `['a']` |
+| All same `['a','a','a']` | count == 3 → write `['a','3']` |
+| All different `['a','b','c']` | each count == 1 → write `['a','b','c']` |
+| Count >= 10 `(12 times)` | `String.valueOf(12)` → `['1','2']` — two write steps |
+| Empty array | outer while never enters — return 0 |
+
+---
+
+## Same Pattern — Other Problems
+
+| Problem | Difference from template |
+|---|---|
+| LC 26 — Remove Duplicates from Sorted Array | no count needed, write advances only when new char seen |
+| LC 27 — Remove Element | write advances only when element != target |
+| LC 283 — Move Zeroes | write advances only when element != 0 |
+| LC 443 — String Compression | write advances + writes count as digits |
+
+All four use the same invariant: `write <= read`. Only the condition for advancing `write` changes.
+
+---
+
+## What to say in an interview
+
+> "This is an in-place read-write two pointer problem. I'll use a read pointer to scan input and a write pointer to commit results. The key invariant is write never overtakes read, so I never overwrite unprocessed data."
+
+Then code the template. That one sentence signals pattern recognition immediately.
+
+---
+
+## Before writing any method in this pattern — ask yourself
+
+1. What is the condition that makes `write` advance?
+2. What metadata do I need to write alongside the main element? (count, index, transformed value?)
+3. Does count need special handling at boundaries? (count == 1, count >= 10)
