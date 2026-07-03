@@ -1,0 +1,20 @@
+┌─────────────────────────────────────────────────────────────────┐
+│                  COMPARATOR CHEAT SHEET                         │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Want SMALLER first?  → Integer.compare(a, b)   ← a before b  │
+│  Want BIGGER  first?  → Integer.compare(b, a)   ← swap!       │
+│                                                                 │
+│  Integers:   (a, b) -> Integer.compare(a, b)                   │
+│  Strings:    (a, b) -> a.compareTo(b)                          │
+│  By field:   (a, b) -> Integer.compare(a[0], b[0])             │
+│  By map val: (a, b) -> Integer.compare(mp.get(a), mp.get(b))   │
+│                                                                 │
+│  TO REVERSE ANYTHING → just swap a and b inside compare()      │
+│                                                                 │
+│  PQ default = MIN HEAP (no comparator needed)                  │
+│  PQ max heap = (a, b) -> Integer.compare(b, a)                 │
+│                                                                 │
+│  NEVER use a - b  →  use Integer.compare(a, b)  (no overflow)  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
