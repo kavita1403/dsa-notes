@@ -436,3 +436,147 @@ Lesson: **DSU is for undirected connectivity, not directed reachability.** For d
 - Minor phrasing correction: it is not really "just DFS/BFS traversal" that solves this — it is DFS/BFS **plus a reachability check** (did we hit every node?). The traversal is the mechanism; the check is what the problem is actually asking. Two-part answer.
 
 ---
+
+## 4. All Paths From Source to Target — LC 797
+
+**Link:** https://leetcode.com/problems/all-paths-from-source-to-target/
+
+**Problem (1-liner):** Given a **DAG** with `n` nodes labelled `0..n-1`, where `graph[i]` is the adjacency list of nodes reachable from `i`, return **all possible paths** from node `0` to node `n-1`.
+
+### What tripped me up
+- DFS felt natural — add current node to a temp path, recurse on neighbours, when I hit `n-1` push a **snapshot** of temp into the answer, then **backtrack** (pop the last node).
+- BFS was where I got stuck. I could not figure out how to keep each path separate as it evolved. Looked at the solution: **each queue element is a whole path, not just a node.** For every neighbour, make a **copy** of the current path, append the neighbour, and enqueue. That is the whole trick. Obvious in hindsight.
+
+### Key insight — this is DAG enumeration, not connectivity
+Most graph problems so far (547, 323, 841) asked *counting* or *reachability* questions. This one asks for **all paths** — an enumeration problem. That single word changes the complexity class from polynomial to **exponential**, and it changes which data structure you carry around during traversal.
+
+- **Counting/reachability →** carry `visited[]` and a counter. One bit per node.
+- **Enumeration →** carry the **current path** (mutable list for DFS, immutable snapshot for BFS).
+
+**No `visited[]` needed here.** The graph is a DAG, so there are no cycles → you cannot loop forever. Adding `visited[]` would actually be **wrong**: different paths from `0` to `n-1` often share intermediate nodes (`0 → 2 → 3` and `0 → 1 → 2 → 3` both use node `2`), and a global `visited[]` would block the second path from ever forming.
+
+### Approach 1 — DFS + backtracking (default choice)
+
+<details>
+<summary><b>Show DFS code (Java)</b></summary>
+
+```java
+void dfs(int node, int target, int[][] graph,
+         List<Integer> path, List<List<Integer>> result) {
+    path.add(node);                              // choose
+    if (node == target) {
+        result.add(new ArrayList<>(path));       // SNAPSHOT — must copy!
+    } else {
+        for (int nei : graph[node]) {
+            dfs(nei, target, graph, path, result);
+        }
+    }
+    path.remove(path.size() - 1);                // un-choose (backtrack)
+}
+
+List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+    List<List<Integer>> result = new ArrayList<>();
+    dfs(0, graph.length - 1, graph, new ArrayList<>(), result);
+    return result;
+}
+```
+
+</details>
+
+**Why the snapshot?** `path` is a single mutable list that gets reused across the whole recursion. If you push `path` itself into `result`, every entry in `result` ends up pointing to the same (eventually empty) list. **Always `new ArrayList<>(path)`** when saving.
+
+### Approach 2 — BFS with path-per-queue-entry
+
+<details>
+<summary><b>Show BFS code (Java)</b></summary>
+
+```java
+List<List<Integer>> allPathsSourceTarget(int[][] graph) {
+    int target = graph.length - 1;
+    List<List<Integer>> result = new ArrayList<>();
+
+    Queue<List<Integer>> q = new ArrayDeque<>();
+    List<Integer> start = new ArrayList<>();
+    start.add(0);
+    q.offer(start);
+
+    while (!q.isEmpty()) {
+        List<Integer> path = q.poll();
+        int last = path.get(path.size() - 1);
+
+        if (last == target) {
+            result.add(path);                    // already a fresh list — no copy needed
+            continue;
+        }
+        for (int nei : graph[last]) {
+            List<Integer> next = new ArrayList<>(path);   // COPY on branch
+            next.add(nei);
+            q.offer(next);
+        }
+    }
+    return result;
+}
+```
+
+</details>
+
+**Mental model:** the queue does not hold "nodes to visit next" — it holds **partial paths in progress**. Each pop is one path being extended. When a path reaches the target, it goes straight into `result`.
+
+### Time Complexity — the honest breakdown (this is the part I want to nail)
+
+Both DFS and BFS have the **same** big-O here. Let me walk through why step by step, because "all paths" TC is not obvious.
+
+**Step 1 — How many paths can there be in the worst case?**
+
+Worst case is a **complete DAG**: every node `i` has an edge to every node `j > i`. In this graph, a path from `0` to `n-1` is defined by *which subset of the intermediate nodes* `{1, 2, ..., n-2}` you pass through, in order. Any subset works because the DAG is complete.
+
+Number of subsets of an `(n-2)`-element set = **2^(n-2) ≈ 2^n**.
+
+So the **number of paths** is O(2^n) in the worst case. This is why enumeration problems blow up.
+
+**Step 2 — How much work per path?**
+
+Each path has up to `n` nodes. For DFS, adding to `path` is O(1), but the **snapshot copy** at the target is O(n). For BFS, each `new ArrayList<>(path)` inside the neighbour loop is O(path length) = O(n).
+
+So per path: **O(n) work**.
+
+**Step 3 — Multiply.**
+
+**Time = O(paths × work per path) = O(2^n × n) = O(n · 2^n).**
+
+That is the answer. Both DFS and BFS hit it.
+
+### Space Complexity
+
+- **Output size** dominates: `O(n · 2^n)` — up to `2^n` paths, each up to length `n`. This is unavoidable; the problem asks for the answer.
+- **DFS auxiliary space** (excluding output): O(n) for the recursion stack + O(n) for the current `path`. So **O(n) extra**.
+- **BFS auxiliary space** (excluding output): the queue can hold many partial paths at once. In the worst case this is `O(n · 2^n)` too — much worse than DFS. This is why **DFS + backtracking is the standard tool for enumeration**: it emits paths and reclaims memory as it backtracks; BFS keeps all in-flight paths alive.
+
+### DFS vs BFS for enumeration — quick rule
+| Metric | DFS + backtracking | BFS with path-copy |
+|--------|--------------------|--------------------|
+| Time | O(n · 2^n) | O(n · 2^n) |
+| Extra space | **O(n)** | O(n · 2^n) |
+| Code length | Shortest | Chattier (queue + copy) |
+| When to use | **Default** for "return all paths / subsets / combinations" | Rare — only if you need paths in shortest-first order |
+
+For LeetCode enumeration problems, reach for DFS + backtracking by default. BFS shines for **shortest-path** questions, not all-paths.
+
+### Next-time checklist
+1. **"Return all paths / subsets / combinations" → enumeration.** Complexity is exponential in the worst case. Do not panic when you see 2^n show up.
+2. **DAG?** Skip `visited[]` — cycles are impossible, and `visited[]` would incorrectly block shared intermediate nodes.
+3. **DFS backtracking template:**
+   - `path.add(node)` before recursing
+   - `if (done) result.add(new ArrayList<>(path))` — **snapshot, always copy**
+   - `path.remove(last)` after recursing
+4. **BFS enumeration template:** queue holds **paths**, not nodes. Copy path on every branch.
+5. **Default to DFS** for all-paths. Same time, way better space.
+
+### Gotchas I missed
+- **The snapshot copy is not optional.** Pushing `path` directly instead of `new ArrayList<>(path)` is the #1 bug on this problem. All entries in `result` end up pointing to the same object.
+- **Do NOT add `visited[]` reflexively.** Works on Provinces / Components / Keys and Rooms — breaks here. The rule is: `visited[]` prevents re-*visiting*; backtracking wants to re-visit nodes on different paths.
+- **Backtracking pop is unconditional** — always runs, whether or not we hit the target. Putting it inside the `else` branch (skipping the pop on target) leaves stale entries and corrupts subsequent paths.
+- Correction to how I initially thought about it: BFS is not "harder" than DFS here — it is just **carrying more state per queue entry** than the counting/reachability problems taught us. Once you accept "queue element = a whole partial path", the code writes itself.
+- Small terminology: this problem is DAG-enumeration. The complexity class here is the same as generating all subsets — that is your mental yardstick. Any time you see "return all X" in a graph/tree problem, expect `2^n` or `n!` in your TC.
+
+---
