@@ -719,3 +719,91 @@ public Node cloneGraph(Node node) {
 - Small correction to my mental model: the "recursion connects the graph automatically" instinct is not wrong for a **traversal** problem (where you are just walking) — it is wrong for a **construction** problem (where you are building new nodes). The recursive return value is the physical wire.
 
 ---
+
+## 6. Minimum Number of Vertices to Reach All Nodes — LC 1557
+
+**Link:** https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/
+
+**Problem (1-liner):** Given a **DAG** with `n` nodes and an edge list `edges[i] = [from, to]`, return the **smallest set of vertices** such that every node in the graph is reachable from at least one vertex in the set.
+
+### What tripped me up
+- At first I thought this was a traversal / connected-components problem — pick a start, DFS/BFS, count how many launches. It is not.
+- The unlock: **the answer is exactly the set of nodes with `in-degree == 0`.** No DFS, no BFS, no adjacency list even needed.
+- Learned two new concepts: **in-degree / out-degree**, and how they combined with the **DAG** property turn this into a one-pass linear scan.
+
+### New concepts I picked up
+- **In-degree of node `v`** = number of edges *pointing INTO* `v`. In an edge list, that is the number of edges where `v` is the second element (`edge[1]`).
+- **Out-degree of node `v`** = number of edges *going OUT of* `v`. Number of edges where `v` is the first element (`edge[0]`).
+- For an undirected edge, both endpoints get +1 degree (no direction). For a directed edge `u -> v`, `u` gets +1 out-degree, `v` gets +1 in-degree.
+- **DAG = Directed Acyclic Graph** — directed edges, no cycles. That "no cycles" part is what makes this trick work (see below).
+
+### Key insight — why `in-degree == 0` is the whole answer
+
+Split every node into two buckets:
+
+- **`in-degree == 0`:** no edge points to this node → **no other node can reach it** → we MUST include it in our answer.
+- **`in-degree >= 1`:** some node `u` points to this node → we can reach it from `u`. And `u` is itself either in-degree 0 (already in our answer) or reachable from some ancestor. Because the graph is a DAG (no cycles), walking backwards from any node eventually reaches an in-degree-0 root. So every in-degree-`>=1` node is **transitively reachable** from the in-degree-0 set.
+
+That covers "sufficient" (every node is reachable from an in-degree-0 node) AND "necessary" (in-degree-0 nodes cannot be reached from anywhere else, so we cannot skip any of them). Answer = set of nodes with in-degree 0. Nothing to optimise, nothing to explore.
+
+### The DAG property is doing heavy lifting
+If cycles were allowed, this trick breaks. Example: `A -> B -> C -> A`. All three have in-degree 1, so the "in-degree 0" set would be **empty** — but you obviously still need one vertex (any of the three) to cover the cycle. In a general directed graph you would need something more sophisticated (find strongly connected components, contract each SCC into a super-node, then apply the in-degree trick on the DAG of SCCs).
+
+**So: the "answer = in-degree 0 nodes" rule is only correct because the problem promises a DAG.** Always check the problem statement for the DAG guarantee before reaching for this trick.
+
+### Approach — one pass over edges
+
+<details>
+<summary><b>Show code (Java)</b></summary>
+
+```java
+public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
+    boolean[] hasIncoming = new boolean[n];
+    for (List<Integer> e : edges) {
+        hasIncoming[e.get(1)] = true;      // e.get(1) is the destination
+    }
+
+    List<Integer> result = new ArrayList<>();
+    for (int v = 0; v < n; v++) {
+        if (!hasIncoming[v]) result.add(v);
+    }
+    return result;
+}
+```
+
+</details>
+
+**Micro-optimisation to notice:** we do not even need an integer in-degree *count* — a single boolean "does anything point at this node?" is enough, since we only care about the "== 0 vs > 0" distinction. If a future problem asks you to remove edges in a specific order (topological sort / Kahn), then you would need the actual counts.
+
+### Time & Space Complexity
+
+**Time = O(V + E).**
+- One pass over `edges` to fill `hasIncoming` → O(E).
+- One pass over `0..n-1` to collect nodes without incoming edges → O(V).
+- Total: **O(V + E)**.
+
+**Space = O(V).**
+- `hasIncoming` array: O(V).
+- Output list: up to O(V) if every node is a root (edge case: `edges` is empty).
+- No adjacency list, no visited set, no queue, no recursion stack. Nothing else.
+
+### Where in-degree shows up elsewhere (worth knowing)
+- **Topological sort (Kahns algorithm):** start with all in-degree-0 nodes in a queue, pop one, decrement in-degrees of its out-neighbours, enqueue any that just hit 0. Result is a valid topological order.
+- **Course Schedule (LC 207, 210):** cycle detection in directed graphs. If Kahns algorithm cannot drain the queue (some in-degrees never hit 0), there is a cycle.
+- **Any "must-start-here" question on a DAG:** in-degree 0 is your friend.
+
+### Next-time checklist
+1. **"Reach all nodes with fewest starts" on a DAG →** answer is nodes with in-degree 0. Do not overthink it.
+2. **Confirm the graph is a DAG first.** If cycles are possible, this trick is wrong.
+3. **Edge list of directed edges + question about starts →** think in-degree. Do not immediately reach for adjacency list + DFS.
+4. **`boolean hasIncoming[]` beats `int inDegree[]` when you only need "zero or not".** Save yourself the arithmetic.
+5. **Kahn / topological sort family** all sit on the same "start from in-degree 0" foundation. Recognise the pattern.
+
+### Gotchas I missed
+- **This is a graph problem with no graph traversal.** Genuinely surprising the first time. The problem is essentially a set-membership question dressed up in graph vocabulary. Building an adjacency list would be pure waste.
+- **Isolated nodes (in-degree 0 AND out-degree 0) are still roots.** They must be in the answer because nothing reaches them. The one-boolean approach handles this for free — an isolated node never appears as an edge destination, so `hasIncoming[v]` stays `false`.
+- **What about out-degree?** Irrelevant for this problem. The question is "can this node be reached from elsewhere?", which is purely an in-degree question.
+- Correction on my mental framing: I initially wanted to "traverse from every candidate root and see what happens." That would work but is O(V·(V+E)) or worse — massively wasteful. The in-degree trick converts the whole thing into a single linear scan by using the DAG property to skip the exploration entirely.
+- Vocabulary reminder for future me: **DAG = Directed + Acyclic + (Graph).** Not "directed" alone. The "acyclic" is doing all the load-bearing here; a general directed graph would need SCC contraction first.
+
+---
