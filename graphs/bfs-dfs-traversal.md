@@ -315,3 +315,124 @@ For LC 323 specifically, **Union-Find is often the shortest correct answer** bec
 - Small correction to what you said: "once I build the adjacency list, DFS is easy" — 100% true, but the *reason* it becomes easy is that you've converted the problem from LC 323 (edge list) into LC 547 shape (per-node neighbour lookup). That mental step — **"normalise the input into the shape my algorithm expects"** — is the reusable pattern here.
 
 ---
+
+## 3. Keys and Rooms — LC 841
+
+**Link:** https://leetcode.com/problems/keys-and-rooms/
+
+**Problem (1-liner):** `n` rooms labelled `0..n-1`, all locked except room `0`. `rooms[i]` is the list of keys found inside room `i` (each key unlocks the room with that number). Starting from room `0`, return `true` if you can visit **every** room.
+
+### What tripped me up
+- Nothing much — I realised straight away that `rooms` **is** the adjacency list. `rooms[i]` = neighbours of node `i`. No conversion needed.
+- Just DFS/BFS from node `0`, mark visited, at the end check if every node got visited.
+
+### Key insight — the input IS the adjacency list
+This problem is the third flavour in the input-shape trilogy:
+
+| Problem | Input given | Do you build the adjacency list yourself? |
+|---------|-------------|-------------------------------------------|
+| LC 547 Provinces | `int[][]` adjacency **matrix** | No — scan row `i` for neighbours |
+| LC 323 Components | **edge list** `[[u,v], ...]` | **Yes** — one O(E) pre-pass |
+| LC 841 Keys and Rooms | `List<List<Integer>>` **adjacency list** | No — just index into it |
+
+So the "hard part" of graph problems (getting to fast neighbour lookup) is already done for you. Whatever effort you saved goes into two things:
+1. **Choosing a start node** — problem tells you: room `0`.
+2. **Checking the answer condition** — did we visit all `n` rooms? Track a counter or check `visited[]` at the end.
+
+### One critical thing to notice: the graph is DIRECTED
+Having a key to room `j` in room `i` lets you go `i → j`. It does **not** automatically let you go `j → i` (room `j` might not contain a key for room `i`).
+
+This directedness matters when you consider Union-Find (see below).
+
+### Approach 1 — DFS
+
+<details>
+<summary><b>Show DFS code (Java)</b></summary>
+
+```java
+void dfs(int room, List<List<Integer>> rooms, boolean[] visited) {
+    visited[room] = true;
+    for (int key : rooms.get(room)) {
+        if (!visited[key]) dfs(key, rooms, visited);
+    }
+}
+
+boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    int n = rooms.size();
+    boolean[] visited = new boolean[n];
+    dfs(0, rooms, visited);
+    for (boolean v : visited) if (!v) return false;
+    return true;
+}
+```
+
+</details>
+
+- **Time:** O(V + E) — each room visited once (V), each key inspected once across all rooms (total keys = E).
+- **Space:** O(V) visited + O(V) recursion stack worst case. No extra adjacency structure needed — `rooms` **is** the structure.
+
+### Approach 2 — BFS
+
+<details>
+<summary><b>Show BFS code (Java)</b></summary>
+
+```java
+boolean canVisitAllRooms(List<List<Integer>> rooms) {
+    int n = rooms.size();
+    boolean[] visited = new boolean[n];
+    int visitedCount = 0;
+
+    Queue<Integer> q = new ArrayDeque<>();
+    q.offer(0);
+    visited[0] = true;
+    visitedCount++;
+
+    while (!q.isEmpty()) {
+        int room = q.poll();
+        for (int key : rooms.get(room)) {
+            if (!visited[key]) {
+                visited[key] = true;   // mark on ENQUEUE
+                visitedCount++;
+                q.offer(key);
+            }
+        }
+    }
+    return visitedCount == n;
+}
+```
+
+</details>
+
+- **Time:** O(V + E) — same reasoning as DFS.
+- **Space:** O(V) visited + O(V) queue worst case. `visitedCount` avoids the final scan of `visited[]`.
+
+### Approach 3 — Union-Find? Nope, wrong tool here
+
+Union-Find works on **undirected** connectivity — its `union(a, b)` is symmetric: once you merge `a` and `b`, they are indistinguishable, and any future query treats them as mutually reachable.
+
+But this graph is **directed**. If room `0` has a key to room `1`, but room `1` has no keys at all, DSU would happily union `{0, 1}` — but you actually **cannot** reach `0` from `1`. DSU has no way to encode "reachable from 0, but not necessarily back".
+
+Lesson: **DSU is for undirected connectivity, not directed reachability.** For directed reachability from a source, BFS/DFS is the correct tool. (For strongly-connected components in directed graphs you would reach for Kosaraju or Tarjan, not DSU.)
+
+### When to pick which (for LC 841 specifically)
+| Approach     | Verdict for LC 841                                     |
+|--------------|--------------------------------------------------------|
+| DFS          | **Default pick.** Shortest code, matches the problem shape. |
+| BFS          | Equally valid. Slightly better on very deep chains (no recursion). |
+| Union-Find   | **Wrong tool.** Graph is directed; DSU would give false positives. |
+
+### Next-time checklist
+1. **Look at the input type before anything else.** `List<List<Integer>>` = adjacency list already built. `int[][]` with square dims = matrix. `int[][]` of pairs = edge list.
+2. **Directed or undirected?** Look at how the problem describes edges. "Has a key to" is one-way → directed. "Is friends with" / "is connected to" is usually two-way → undirected.
+3. **Start node:** problem-specified here (room `0`). If not specified, you probably need an outer loop over all nodes (like LC 547 / 323).
+4. **Answer condition:** "visit all" → track a counter or verify `visited[]` at the end. Return early with `visitedCount == n` — cleaner than a post-scan.
+5. **DSU red flag:** if the graph is directed OR the problem asks about reachability from a specific source, do NOT reach for Union-Find.
+
+### Gotchas I missed
+- **Duplicate keys** inside the same room (`rooms[i]` can contain the same key twice, or a key you already have). `visited[]` handles both for free — no special case needed.
+- **Self-key** (`rooms[i]` contains `i`) — harmless; `visited[i]` is already `true`, so the recursive/enqueue branch skips.
+- **Room 0 comes pre-unlocked** — that is why the DFS/BFS starts there without needing a key. Do not accidentally require a key for room 0.
+- **Answer type is `boolean`, not a count.** Easy misread under pressure — do not return `visitedCount` by accident.
+- Minor phrasing correction: it is not really "just DFS/BFS traversal" that solves this — it is DFS/BFS **plus a reachability check** (did we hit every node?). The traversal is the mechanism; the check is what the problem is actually asking. Two-part answer.
+
+---
