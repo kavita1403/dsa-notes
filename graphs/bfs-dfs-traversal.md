@@ -580,3 +580,142 @@ For LeetCode enumeration problems, reach for DFS + backtracking by default. BFS 
 - Small terminology: this problem is DAG-enumeration. The complexity class here is the same as generating all subsets — that is your mental yardstick. Any time you see "return all X" in a graph/tree problem, expect `2^n` or `n!` in your TC.
 
 ---
+
+## 5. Clone Graph — LC 133
+
+**Link:** https://leetcode.com/problems/clone-graph/
+
+**Problem (1-liner):** Given a reference to a node in a **connected, undirected** graph (each node has an `int val` and a `List<Node> neighbors`), return a **deep copy** of the entire graph.
+
+### What tripped me up
+- Did not think of using a map. Could not figure out how to make sure that when node `A` and node `B` both point to node `C`, the *cloned* `A` and `B` end up pointing to the **same** cloned `C` (not two separate copies).
+- Struggled with the idea that DFS needs to **return** the clone up to its parent. I assumed the wiring would happen automatically. It does not — the `return newNode;` is what actually connects the parent clone to the child clone.
+
+### Key insight — this is graph CONSTRUCTION, not traversal-for-answer
+Every previous problem (547, 323, 841, 797) used DFS/BFS to **compute** something (count, boolean, list of paths) while walking the graph. Here, the walk itself is a means to an end — the real job is **building a mirror graph in parallel**.
+
+Two things happen at every DFS call:
+1. **Traverse:** visit this node.
+2. **Construct:** create the clone, and wire the parents clone to this one via the return value.
+
+That second job is why the recursion has to return the newly-built clone up the call stack. In pure traversal problems, DFS could return `void`. Here it cannot.
+
+### The map does DOUBLE duty
+This is the piece I want future-me to internalise. The `Map<Node, Node>` (original → clone) is not just a caching optimisation — it is doing **two independent jobs at once**:
+
+1. **Acts as `visited[]`** — this graph is **undirected and can have cycles**, so without a memo you would recurse forever. The `if (mp.containsKey(node)) return mp.get(node);` line is literally the cycle-breaker.
+2. **Acts as the "original → clone" lookup** — when a later DFS branch enters a node that was already cloned (because two originals share a neighbour), we must return **the same clone instance**, not build a new one. That is what makes `A` and `B` both point to the same `C`.
+
+One data structure, two responsibilities. Miss either interpretation and the code either loops forever or produces a mangled duplicate-riddled clone.
+
+### The `mp.put(node, newNode)` MUST come BEFORE recursing
+Order matters and this is the second-most-common bug:
+
+```java
+Node newNode = new Node(node.val);
+mp.put(node, newNode);                              // put FIRST
+for (Node nei : node.neighbors) {
+    newNode.neighbors.add(dfs(mp, nei));            // THEN recurse
+}
+```
+
+If you swap the order (recurse first, then put), the cycle-break in the recursive call never sees your in-progress node → infinite recursion → stack overflow. Insert the clone into the map **the moment you create it**, before you touch any neighbours.
+
+### Approach 1 — DFS
+
+<details>
+<summary><b>Show DFS code (Java)</b></summary>
+
+```java
+Node dfs(Map<Node, Node> mp, Node node) {
+    if (node == null) return null;                  // defensive: empty graph
+    if (mp.containsKey(node)) return mp.get(node); // cache hit → return existing clone
+
+    Node newNode = new Node(node.val);
+    mp.put(node, newNode);                          // PUT BEFORE recursing (cycle break)
+
+    for (Node nei : node.neighbors) {
+        newNode.neighbors.add(dfs(mp, nei));        // return value = the wired-up clone
+    }
+    return newNode;                                 // hand this clone back to the caller
+}
+
+public Node cloneGraph(Node node) {
+    return dfs(new HashMap<>(), node);
+}
+```
+
+</details>
+
+**Why `return newNode` is not optional:** the caller (parent frame) is executing `newNode.neighbors.add(dfs(mp, nei));`. It is literally consuming the return value to build its own neighbour list. Without the return, `add(null)` would run and no edges would exist in the clone.
+
+### Approach 2 — BFS (map still does double duty)
+
+BFS makes the two jobs of the map more visible because construction and traversal are separated in code rather than intertwined in recursion.
+
+<details>
+<summary><b>Show BFS code (Java)</b></summary>
+
+```java
+public Node cloneGraph(Node node) {
+    if (node == null) return null;
+
+    Map<Node, Node> mp = new HashMap<>();
+    mp.put(node, new Node(node.val));               // clone the start node up front
+
+    Queue<Node> q = new ArrayDeque<>();
+    q.offer(node);
+
+    while (!q.isEmpty()) {
+        Node curr = q.poll();
+        for (Node nei : curr.neighbors) {
+            if (!mp.containsKey(nei)) {
+                mp.put(nei, new Node(nei.val));    // create clone the FIRST time we see nei
+                q.offer(nei);                       // and only then enqueue for exploration
+            }
+            mp.get(curr).neighbors.add(mp.get(nei)); // wire clone-of-curr to clone-of-nei
+        }
+    }
+    return mp.get(node);
+}
+```
+
+</details>
+
+**Why this is clean:** every neighbour edge is wired exactly once by looking both endpoints up in the map. The maps "have I cloned this yet?" role is what stops us from enqueueing the same node twice (which is BFSs cycle break).
+
+### Time & Space Complexity
+
+**Time = O(V + E).**
+- Every node is created and inserted into the map exactly once → O(V).
+- Every edge is traversed exactly twice in an undirected graph (once from each endpoint) → O(2E) = O(E).
+- Map `put`/`get` are O(1) amortised.
+- Total: **O(V + E)**.
+
+**Space = O(V + E) for the cloned graph itself + O(V) for the map + O(V) recursion stack (DFS) or O(V) queue (BFS).**
+- The cloned graph is the output → unavoidable O(V + E).
+- Auxiliary space (excluding output) = **O(V)**.
+
+### DFS vs BFS for this problem
+| Aspect | DFS | BFS |
+|--------|-----|-----|
+| Code length | Shorter (recursion carries the wiring) | A bit longer (explicit queue + neighbour wiring) |
+| Wiring style | Via return value up the call stack | Via two map lookups per edge |
+| Deep graphs | Risk of stack overflow | Safe (heap-allocated queue) |
+| Default pick | Yes — this is textbook DFS territory | Fine, and clearer if you are learning the pattern |
+
+### Next-time checklist
+1. **"Deep copy / clone a graph" → build a `Map<Node, Node>`.** No exceptions.
+2. **Put the clone in the map BEFORE recursing into neighbours.** Otherwise cycles blow the stack.
+3. **DFS returns the clone** so the caller can wire it into the parents neighbour list. This is why the recursion is not `void`.
+4. **BFS wires edges via two map lookups** — `mp.get(curr).neighbors.add(mp.get(nei))`. Enqueue only on first-sight of a neighbour.
+5. **Recognise the pattern:** "traverse a structure + build a parallel structure alongside" also shows up in copy-tree-with-random-pointer, deep-clone linked list, tree-to-graph conversions, etc. Same map trick every time.
+
+### Gotchas I missed
+- **Map does two jobs — do not conflate them but do not separate them either.** It is *simultaneously* the visited-set (cycle break) AND the original→clone lookup (edge-sharing correctness). One HashMap covers both. If you tried to use `Set<Node>` for visited and a separate map for cloning, you would just be doing extra work.
+- **Undirected graph, so every edge shows up twice.** Wiring `A → C` when processing `A`, and `C → A` when processing `C`, happens naturally — no special case, no de-duplication needed, because you follow the inputs neighbour lists verbatim.
+- **`return newNode` is a wire, not a formality.** Correction to my initial thinking: I assumed recursion would "just handle" the connections. It does not. Every DFS frame produces exactly one clone, and its return value is the edge the parent uses to hook it in. Pure side-effect DFS (like LC 547/323/841) is a different beast.
+- **Contrast with LC 797 (All Paths):** there we said "no visited[] needed, DAG." Here we say "map IS the visited set, needed because of cycles." Same word (visited), different rule — driven by whether cycles exist. Always check: is this graph cyclic?
+- Small correction to my mental model: the "recursion connects the graph automatically" instinct is not wrong for a **traversal** problem (where you are just walking) — it is wrong for a **construction** problem (where you are building new nodes). The recursive return value is the physical wire.
+
+---
