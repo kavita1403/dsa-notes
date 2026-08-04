@@ -66,6 +66,118 @@ For DFS↔BFS mechanics on grids, all three rules from [`dfs-to-bfs-conversion.m
 
 ---
 
+## Time Complexity of grid problems — how to calculate it
+
+Grid TC trips people up because "4 recursive calls per cell" *looks* exponential but almost never is. This section is the framework I use to derive TC from scratch for any grid problem — no memorising.
+
+### Step 0: translate the grid to graph vocabulary
+
+| Grid concept | Graph equivalent |
+|--------------|------------------|
+| Cell `(r, c)` | Node |
+| Neighbour cell (up/down/left/right) | Edge |
+| Grid size `m x n` | `V = m · n` nodes |
+| 4-connectivity | Each node has ≤ 4 edges → `E ≤ 4 · m · n = O(m · n)` |
+
+**Key consequence:** for a 4-connected grid, `E = O(V) = O(m · n)`. The `O(V + E)` bound from `bfs-dfs-traversal.md` collapses to just `O(m · n)`. This is why almost every grid problem below is O(m·n).
+
+### Step 1: count how many times each cell is *processed*
+
+This is the whole game. If you can bound the number of times any single cell is touched, multiplying by `m · n` gives you the answer.
+
+| Scenario | Times a cell is processed |
+|----------|---------------------------|
+| Single DFS/BFS from one source, with `visited` | **1** (visited check skips repeats) |
+| Whole-grid outer-loop scan (Number of Islands, Max Area) | **1** (once the outer loop reaches a cell, it either DFSes and marks visited, or skips because already visited) |
+| Multi-source BFS (Rotting Oranges, Walls & Gates) | **1** (first source to reach it wins; visited check skips subsequent sources) |
+| Reverse DFS (Pacific Atlantic) | **at most 2** (once per ocean flood; two separate `visited` grids) |
+| Boundary DFS (Surrounded Regions) | **1** for the mark phase + 1 for the sweep = **2** |
+| Enumeration / all-paths on a grid | **exponential** — no `visited`, or `visited` that gets un-marked (backtracking) |
+
+So for every problem in this file, each cell is processed a **constant** number of times. That is why they are all `O(m · n)`.
+
+### Step 2: cost per cell processing
+
+Usually **O(1)**: check 4 neighbours, do a compare, maybe write to the cell. Constant time.
+
+If per-cell work is O(k) for some `k` (e.g. computing something over all `k` colours at each pixel), multiply: `O(m · n · k)`.
+
+### Step 3: multiply
+
+**Time = (cells processed) × (times each is processed) × (cost per processing)**
+
+For the standard grid problems in this note:
+- `m · n` cells
+- constant times per cell (1 or 2)
+- O(1) per processing
+- → **O(m · n)**
+
+### The "why isn't 4 recursive calls exponential?" question
+
+Because `visited` (or in-place mutation, or a sentinel) **prunes** the tree of recursive calls. Every cell has ≤ 4 recursive calls into its neighbours, but only the calls that hit an *unvisited* cell do real work — the rest return in O(1). So the total *real work* across the whole recursion equals the number of unique cells visited, which is ≤ `m · n`.
+
+Without `visited`, DFS on a grid would loop forever (go right, go left, go right, go left, …) — that is why the `visited` mechanism is not optional and it is also what caps the complexity at O(m·n).
+
+### The naive per-source anti-pattern (why reversal tricks matter)
+
+If your first instinct is "for each interesting cell, run a full DFS/BFS from it and check something," the TC is:
+
+**O(m · n) sources × O(m · n) per traversal = O((m · n)²)**
+
+On a 300×300 grid that is ≈ 8 × 10¹ operations — TLE. This is exactly the trap Pacific Atlantic (417), Walls and Gates (286), and Rotting Oranges (994) set up, and it is why the **reversal trick** (Pattern 2 and Pattern 3) is worth its own name: it collapses O((m·n)²) into O(m·n) by running **one traversal from the anti-source** instead of one per source.
+
+### Space complexity breakdown
+
+Almost every grid problem has three space contributors. Track them separately:
+
+| Contributor | Size | Notes |
+|-------------|------|-------|
+| `visited` grid (if used) | O(m · n) | Skip this line if you mutate in place or use a sentinel. |
+| Recursion stack (DFS) | O(m · n) worst case | Achieved by a snake-shaped island that fills the whole grid. |
+| BFS queue | O(m · n) worst case | Achieved when a level covers most of the grid. |
+| Output | Problem-specific | E.g. Pacific Atlantic returns up to m·n coordinate pairs → O(m·n). |
+
+**Rule of thumb:** grid problems are **O(m · n) space** total. If your bound looks bigger, either you have a bug or the problem is enumeration-flavoured (see below).
+
+### When TC deviates from O(m · n)
+
+| Problem shape | TC | Why |
+|---------------|----|----|
+| Weighted grid (different move costs) | O(m · n · log(m · n)) | Dijkstra with a priority queue, not plain BFS. |
+| "Return all paths / all islands' shapes" | Exponential | Enumeration — no `visited`, backtracking-style. |
+| K-source BFS where `k` matters | O(k · m · n) worst case | If you cannot share a visited grid across sources. |
+| Grid + state (e.g. "visited with N keys") | O(m · n · 2^K) | State-space grows: cell x subset-of-keys. |
+| Grid + Union-Find (rare) | O(m · n · α(m · n)) | α is inverse Ackermann → effectively O(m · n). |
+
+### TC quick-derivation checklist
+
+Given a new grid problem, ask these in order:
+
+1. **What is a "processing event"?** Reading a cell? Writing to it? Enqueuing?
+2. **How many events per cell?** If `visited` is enforced correctly, it is a small constant (usually 1 or 2). If you find yourself processing a cell many times, either you forgot `visited` or you need a smarter approach.
+3. **Cost per event?** Usually O(1). Multiply if not.
+4. **Number of cells?** `m · n`.
+5. **Multiply.** For the vast majority of grid problems the answer is **O(m · n)** in time and **O(m · n)** in space.
+
+If you get anything different, sanity-check against the deviation table. Bigger than O(m·n) usually means either weights, enumeration, or a per-source trap you should reverse away.
+
+### Applied to every problem in this note
+
+| Problem | Time | Space (aux) | Why |
+|---------|------|-------------|-----|
+| Flood Fill (733) | O(m·n) | O(m·n) recursion | 1 processing per cell |
+| Number of Islands (200) | O(m·n) | O(m·n) recursion | Outer loop touches each cell once; DFS marks-and-skips |
+| Max Area of Island (695) | O(m·n) | O(m·n) recursion | Same as Islands |
+| Island Perimeter (463) | O(m·n) | O(1) | Pattern 0: pure scan, no recursion |
+| Surrounded Regions (130) | O(m·n) | O(m·n) recursion | Boundary launches ≤ 2(m+n), interior sweep is m·n |
+| Rotting Oranges (994) | O(m·n) | O(m·n) queue | Multi-source BFS: each cell rotted at most once |
+| Pacific Atlantic (417) | O(m·n) | O(m·n) two visited grids | Two floods, each O(m·n) → O(2 m·n) = O(m·n) |
+| Walls and Gates (286) | O(m·n) | O(m·n) queue | Distance stored in-cell doubles as visited |
+
+Every single one lands at O(m·n) time and O(m·n) space. That is the *point* of this pattern family — grid graphs are sparse (`E = O(V)`) and traversal is linear.
+
+---
+
 ## 1. Flood Fill — LC 733
 
 **Link:** https://leetcode.com/problems/flood-fill/
