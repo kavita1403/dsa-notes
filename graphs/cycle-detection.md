@@ -129,6 +129,112 @@ When using Union-Find, there is nothing to reset — the DSU spans the whole gra
 
 ---
 
+## Time Complexity of cycle-detection problems — how to calculate it
+
+Every problem in this file lands at **O(V + E) time** and **O(V + E) space**. That is not a coincidence — it falls out of the same 3-step reasoning that grid problems use. This section is the framework for deriving TC on any new problem in this family.
+
+### Step 0: identify V and E
+
+| Problem input | V | E |
+|---------------|---|---|
+| `numCourses` + `prerequisites[][]` (LC 207, 210) | `numCourses` | `prerequisites.length` |
+| `int[][] edges` for a tree + 1 (LC 684, 685) | `edges.length` (tree has `n-1` edges so `V = E`) | `edges.length` |
+| `int[][] graph` adjacency list (LC 785) | `graph.length` | sum of `graph[i].length` / 2 (undirected → each edge listed twice) |
+| `n` + `dislikes[][]` (LC 886) | `n` | `dislikes.length` |
+
+### Step 1: how many times is each edge/node touched?
+
+This is the whole game, same as in grid problems.
+
+| Algorithm | Node touches | Edge touches | Why |
+|-----------|--------------|--------------|-----|
+| Kahn's (BFS with in-degree) | 1 (enqueued exactly when in-degree hits 0) | 1 (each edge decrements one in-degree, once) | In-degree counter IS the visited mechanism — each node hits zero once, then never again |
+| Union-Find single pass | — | 1 per edge (one `union` call) | We iterate the edge stream once, no back-tracking |
+| Union-Find + adjacency list (bipartite variant) | 1 per node in outer loop | 1 per neighbour entry (2 per undirected edge) | Same as BFS traversal cost |
+| 2-color BFS/DFS | 1 (colour set once, checked on neighbour discovery) | 2 per undirected edge (once from each endpoint) | Standard BFS accounting |
+
+**Key insight:** in every one of these, a node or edge is processed a **small constant** number of times. That constant multiplied by `V` or `E` gives the linear bound.
+
+### Step 2: cost per operation
+
+| Operation | Cost | Notes |
+|-----------|------|-------|
+| `queue.offer`, `queue.poll` | O(1) | `ArrayDeque` is amortised O(1) |
+| `indegree[v]--` | O(1) | Array write |
+| `adj.get(u).add(v)` | O(1) amortised | ArrayList append |
+| `dsu.find(x)` | **O(α(V))** | Inverse Ackermann — effectively `< 5` for any realistic input, i.e. essentially O(1) |
+| `dsu.union(a, b)` | O(α(V)) | Two finds + a constant-time link |
+| `color[v] = -color[u]` | O(1) | Array write |
+
+### Step 3: multiply
+
+**Time = (unit of work) × (times per unit) × (cost per unit)**
+
+For Kahn's: `V nodes × 1 dequeue × O(1)` + `E edges × 1 decrement × O(1)` = **O(V + E)**.
+
+For Union-Find on E edges: `E unions × O(α(V))` + `V init × O(1)` = **O(V + E·α(V))** ≈ **O(V + E)**.
+
+For 2-color BFS: same as any BFS = **O(V + E)**.
+
+Every algorithm in this file has the exact same linear bound. This is the payoff of using the right tool — no algorithm here is more expensive than reading the input.
+
+### Why α(V) is treated as O(1)
+
+`α(n)` is the inverse Ackermann function. It grows so slowly that for any `n ≤ 2^65536` (basically the number of atoms in the observable universe, cubed), `α(n) < 5`. So in practice, Union-Find with path compression + union by rank is treated as O(1) per operation. Some textbooks write the bound as O(E · α(V)) for precision; most people just say O(E) because it is honest for any real input.
+
+**Warning:** you MUST have both optimisations — path compression AND union by rank — to get the near-O(1) bound. Skipping either drops you to O(log V) per operation, which is still fast but not textbook-optimal.
+
+### Space complexity breakdown
+
+| Contributor | Size | When present |
+|-------------|------|--------------|
+| Adjacency list | O(V + E) | Kahn's, 2-color BFS, bipartite Union-Find on adj list |
+| `indegree[]` array | O(V) | Kahn's only |
+| BFS queue | O(V) worst case | Kahn's, 2-color BFS |
+| `color[]` array | O(V) | 2-color BFS |
+| DSU `parent[]` + `rank[]` | O(V) | Any Union-Find problem |
+| Recursion stack (if using DFS variant) | O(V) worst case | 3-color DFS for LC 207/210 |
+
+**Rule of thumb:** every problem in this file uses **O(V + E) space** total (dominated by the adjacency list). Union-Find-only problems (LC 684) that operate directly on the edge stream drop the adj list entirely and use just **O(V)** aux space.
+
+### Common misconceptions killed
+
+**"Kahn's algorithm looks like it might loop — every edge could re-enqueue its target?"**
+No. Each node's in-degree hits zero **at most once** (in-degrees only decrease, and once a node is enqueued its in-degree is never inspected again). So each node is enqueued once, dequeued once, and each of its outgoing edges triggers exactly one decrement. Total edge work = E. Total node work = V. Sum = O(V + E).
+
+**"Union-Find on n edges must be O(n log n) because trees are involved?"**
+With path compression + union by rank, it collapses to O(α(n)) per operation, which is functionally O(1). The tree gets so flat so fast that any depth-based reasoning is misleading. Just remember: `parent[x] = find(parent[x])` (path compression) and rank-based union together produce the near-O(1) magic.
+
+**"2-coloring might revisit nodes if we colour then un-colour?"**
+We never un-colour. A node is coloured exactly once when it is first discovered, and any later encounter only reads the colour to check consistency. So each node is coloured once (O(V)) and each edge is inspected once from each endpoint (O(2E) = O(E)).
+
+### TC quick-derivation checklist
+
+For any new cycle-detection / topological / bipartite problem:
+
+1. **What is V and what is E?** Extract from the input format.
+2. **Which recipe applies?** Kahn's, Union-Find, or 2-color BFS?
+3. **Does the problem require building an adjacency list first?** If yes, add an O(V + E) preprocessing step.
+4. **How many operations does the recipe do?** Kahn's: `V + E` operations at O(1) each. Union-Find: `E` unions at O(α(V)) each. 2-color BFS: `V + E` operations at O(1) each.
+5. **Multiply.** The answer is almost always **O(V + E)**.
+
+If you get something bigger (log factors, quadratic, etc.) on a problem in this family, you either forgot path compression, or you are running an inner loop that scans edges/nodes repeatedly — usually a design bug.
+
+### Applied to every problem in this note
+
+| Problem | Time | Aux space | Why |
+|---------|------|-----------|-----|
+| Course Schedule (207) | O(V + E) | O(V + E) | Kahn's: build adj (O(E)) + BFS (O(V + E)) |
+| Course Schedule II (210) | O(V + E) | O(V + E) | Same as 207 + O(V) for output order |
+| Redundant Connection (684) | O(E · α(V)) ≈ O(E) | O(V) | Pure Union-Find on the edge stream, no adj list |
+| Redundant Connection II (685) | O(E · α(V)) ≈ O(E) | O(V) | Two-parent scan (O(E)) + Union-Find pass (O(E · α(V))) |
+| Is Graph Bipartite (785) | O(V + E) | O(V) | 2-color BFS or Union-Find on given adj list (no build cost) |
+| Possible Bipartition (886) | O(V + E) | O(V + E) | Build adj list from `dislikes` (O(E)) + bipartite check (O(V + E)) |
+
+**Meta-observation:** LC 684 and 685 are the outliers with O(V) aux space instead of O(V + E), because Union-Find on a raw edge stream never needs an adjacency list. Whenever you see a problem where you can iterate edges in input order without needing per-node neighbour lookups, Union-Find gives you the smaller footprint for free.
+
+---
+
 ## 1. Course Schedule — LC 207
 
 **Link:** https://leetcode.com/problems/course-schedule/
