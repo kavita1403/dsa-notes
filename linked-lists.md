@@ -140,6 +140,13 @@ For first-middle in even count (1->2->3->4 => 2): start `fast = head.next`.
 - For "find middle", forgetting to specify first vs second middle - 4 nodes have TWO middles; pick deliberately.
 - Starting slow and fast at different positions confuses Phase 2 of Floyd's. Keep both at `head`.
 
+**Example problems:**
+- [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+- [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+- [Happy Number](https://leetcode.com/problems/happy-number/)
+- [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+- [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+
 ---
 
 ## 2. Two Pointer with Gap (Kth from end)
@@ -174,6 +181,13 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
 **Common bugs:**
 - Off-by-one on the gap - `n` vs `n + 1`. Always use `dummy` + gap of `n + 1` for "remove Nth" to avoid head-deletion edge case.
 - Not using a dummy when the first node might be removed (head deletion).
+
+**Example problems:**
+- [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+- [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+- [Delete the Middle Node of a Linked List](https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/)
+- [Rotate List](https://leetcode.com/problems/rotate-list/)
+- [Swapping Nodes in a Linked List](https://leetcode.com/problems/swapping-nodes-in-a-linked-list/)
 
 ---
 
@@ -241,6 +255,13 @@ public ListNode reverseBetween(ListNode head, int m, int n) {
 - Forgetting to save `next` BEFORE reversing - lose the rest of the list.
 - For "reverse between m, n": forgetting to fix `beforeM.next.next` (the new tail's `next`) - the reversed segment becomes disconnected from the rest.
 - Off-by-one in reverse-count loop: reversing nodes from m to n inclusive is `n - m + 1` nodes, so loop runs `n - m + 1` times (i.e., `i <= n - m` or `i < n - m + 1`).
+
+**Example problems:**
+- [Reverse Linked List](https://leetcode.com/problems/reverse-linked-list/)
+- [Reverse Linked List II](https://leetcode.com/problems/reverse-linked-list-ii/)
+- [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
+- [Reorder List](https://leetcode.com/problems/reorder-list/)
+- [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
 
 ---
 
@@ -311,6 +332,13 @@ public ListNode swapPairs(ListNode head) {
 - Losing the `groupNext` pointer - have to walk to find it again.
 - Mixing up which is `groupPrev` (before group) vs new tail (the old `groupPrev.next`).
 
+**Example problems:**
+- [Reverse Nodes in k-Group](https://leetcode.com/problems/reverse-nodes-in-k-group/)
+- [Swap Nodes in Pairs](https://leetcode.com/problems/swap-nodes-in-pairs/)
+- [Rotate List](https://leetcode.com/problems/rotate-list/)
+- [Reverse Nodes in Even Length Groups](https://leetcode.com/problems/reverse-nodes-in-even-length-groups/)
+- [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/)
+
 ---
 
 ## 5. Merge Two Sorted Lists
@@ -359,6 +387,13 @@ public ListNode mergeTwoLists(ListNode a, ListNode b) {
 - Using `<` instead of `<=` - for stable order with duplicates, `<=` keeps `a`'s element first (matters when nodes carry extra metadata).
 - Forgetting `tail.next = (a != null) ? a : b` - leaves the merged list truncated.
 - Recursive version on lists of 10000+ - StackOverflowError.
+
+**Example problems:**
+- [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+- [Sort List](https://leetcode.com/problems/sort-list/)
+- [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+- [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+- [Partition List](https://leetcode.com/problems/partition-list/)
 
 ---
 
@@ -413,6 +448,13 @@ public ListNode mergeKLists(ListNode[] lists) {
 - For heap version: forgetting null check before pushing initial heads (NPE on `comparator(null)`).
 - For divide-and-conquer: off-by-one in `interval` doubling - mishandles odd K.
 - For very long lists: comparator overhead in heap (boxing) can dominate; profile if needed.
+
+**Example problems:**
+- [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+- [Smallest Range Covering Elements from K Lists](https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/)
+- [Find K Pairs with Smallest Sums](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/)
+- [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+- [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/)
 
 ---
 
@@ -483,6 +525,13 @@ public Node copyRandomList(Node head) {
 - HashMap: forgetting null check when wiring `random` (random can be null).
 - Interleave version: not restoring the original list's `next` - corrupts input.
 
+**Example problems:**
+- [Copy List with Random Pointer](https://leetcode.com/problems/copy-list-with-random-pointer/)
+- [Clone Graph](https://leetcode.com/problems/clone-graph/)
+- [Clone Binary Tree With Random Pointer](https://leetcode.com/problems/clone-binary-tree-with-random-pointer/)
+- [Flatten a Multilevel Doubly Linked List](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/)
+- [Populating Next Right Pointers in Each Node II](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/)
+
 ---
 
 ## 8. Reorder / Palindrome (Find Middle + Reverse + Merge/Compare)
@@ -549,6 +598,13 @@ public boolean isPalindrome(ListNode head) {
 - For palindrome with even length: slow lands on first-middle - reversing from `slow` gives equal halves. With odd length, slow lands on middle - reversing from `slow` includes the middle in both, which is fine.
 - For reorder: forgetting `slow.next = null` - the first half's tail still points into the (now-reversed) second half -> infinite loop.
 
+**Example problems:**
+- [Reorder List](https://leetcode.com/problems/reorder-list/)
+- [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
+- [Sort List](https://leetcode.com/problems/sort-list/)
+- [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+- [Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
+
 ---
 
 ## 9. Intersection of Two Linked Lists
@@ -592,6 +648,13 @@ public ListNode getIntersectionNode(ListNode a, ListNode b) {
 - For length-difference: forgetting the second loop (walking together) - returns the wrong node.
 - For elegant trick: using `p1.next` instead of `b` on switch - infinite loop.
 
+**Example problems:** (same "two pointers converge" family, different disguises)
+- [Intersection of Two Linked Lists](https://leetcode.com/problems/intersection-of-two-linked-lists/)
+- [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+- [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+- [Happy Number](https://leetcode.com/problems/happy-number/)
+- [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+
 ---
 
 ## 10. Add Numbers as Linked Lists
@@ -627,6 +690,13 @@ public ListNode addTwoNumbers(ListNode a, ListNode b) {
 **Common bugs:**
 - Forgetting the carry check `|| carry > 0` in the loop condition - drops final carry on overflow (e.g., 99 + 1).
 - Reading `a.val` without checking `a != null` first.
+
+**Example problems:**
+- [Add Two Numbers](https://leetcode.com/problems/add-two-numbers/)
+- [Add Two Numbers II](https://leetcode.com/problems/add-two-numbers-ii/)
+- [Plus One Linked List](https://leetcode.com/problems/plus-one-linked-list/)
+- [Multiply Strings](https://leetcode.com/problems/multiply-strings/) (same carry-propagation family, on strings)
+- [Add Strings](https://leetcode.com/problems/add-strings/) (same carry-propagation family, on strings)
 
 ---
 
@@ -664,6 +734,13 @@ public ListNode partition(ListNode head, int x) {
 
 **Common bugs:**
 - Forgetting `greaterTail.next = null` - last node's original `next` still points into the less-list -> cycle or wrong order.
+
+**Example problems:**
+- [Partition List](https://leetcode.com/problems/partition-list/)
+- [Odd Even Linked List](https://leetcode.com/problems/odd-even-linked-list/)
+- [Sort List](https://leetcode.com/problems/sort-list/)
+- [Split Linked List in Parts](https://leetcode.com/problems/split-linked-list-in-parts/)
+- [Reorder List](https://leetcode.com/problems/reorder-list/)
 
 ---
 
@@ -716,6 +793,13 @@ DLLNode removeLast() {                          // for eviction
 - Not using sentinels - head/tail removal needs special-case logic.
 - For LRU: forgetting to also remove from the HashMap on eviction.
 
+**Example problems:**
+- [LRU Cache](https://leetcode.com/problems/lru-cache/)
+- [LFU Cache](https://leetcode.com/problems/lfu-cache/)
+- [Design Browser History](https://leetcode.com/problems/design-browser-history/)
+- [Flatten a Multilevel Doubly Linked List](https://leetcode.com/problems/flatten-a-multilevel-doubly-linked-list/)
+- [All O'one Data Structure](https://leetcode.com/problems/all-oone-data-structure/)
+
 ---
 
 ## 13. Sentinel / Dummy Node
@@ -757,6 +841,13 @@ Whenever you hear questions like:
 **Common bugs:**
 - Forgetting to return `dummy.next` - returns the sentinel itself.
 - Returning `head` after dummy-based operations - `head` might have been removed.
+
+**Example problems:**
+- [Remove Duplicates from Sorted List](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+- [Remove Duplicates from Sorted List II](https://leetcode.com/problems/remove-duplicates-from-sorted-list-ii/)
+- [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+- [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+- [Partition List](https://leetcode.com/problems/partition-list/)
 
 ---
 
