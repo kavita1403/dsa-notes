@@ -134,9 +134,16 @@ return true;
 - Missing the `l < r` guard in inner skip loops - walks off the array.
 - For container/trap-water: moving the WRONG side (tallest instead of shortest) gives wrong answer.
 
+**Example problems:**
+- [Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+- [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+- [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+- [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
+- [Squares of a Sorted Array](https://leetcode.com/problems/squares-of-a-sorted-array/)
+
 ---
 
-## 2. Same-Direction (slow + fast, in-place modification)
+## 2. Same-Direction (slow + fast write)
 
 **When to use it:** Modify an array in place where some elements need to be kept and others removed/shifted. `slow` is the WRITE index; `fast` walks the input.
 
@@ -185,6 +192,13 @@ return slow;
 - For Move Zeros: forgetting to fill remaining with zeros if the problem says output length must match input.
 - Iterating with `slow` instead of `fast` in the for-loop - O(n^2) instead of O(n).
 
+**Example problems:**
+- [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
+- [Remove Element](https://leetcode.com/problems/remove-element/)
+- [Move Zeroes](https://leetcode.com/problems/move-zeroes/)
+- [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
+- [Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/)
+
 ---
 
 ## 3. Three Pointers (Dutch National Flag)
@@ -222,6 +236,13 @@ while (mid <= high) {
 **Common bugs:**
 - Incrementing `mid` after swapping with `high` - skips an unprocessed element.
 - Using `mid < high` instead of `mid <= high` - off-by-one, misses last unprocessed element.
+
+**Example problems:**
+- [Sort Colors](https://leetcode.com/problems/sort-colors/)
+- [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+- [Partition Array According to Given Pivot](https://leetcode.com/problems/partition-array-according-to-given-pivot/)
+- [Sort Array By Parity II](https://leetcode.com/problems/sort-array-by-parity-ii/)
+- [Sort Array By Parity](https://leetcode.com/problems/sort-array-by-parity/)
 
 ---
 
@@ -294,6 +315,13 @@ return slow;
 - Loop condition for linked list: needs BOTH `fast != null && fast.next != null` to avoid NPE on `fast.next.next`.
 - For Find Duplicate Number: starting `slow = fast = 0` works only if values aren't 0. Start from `arr[0]`.
 
+**Example problems:**
+- [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+- [Linked List Cycle II](https://leetcode.com/problems/linked-list-cycle-ii/)
+- [Happy Number](https://leetcode.com/problems/happy-number/)
+- [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+- [Circular Array Loop](https://leetcode.com/problems/circular-array-loop/)
+
 ---
 
 ## 5. Slow/Fast (Find Middle / Halfway Point)
@@ -330,6 +358,13 @@ return slow;                         // 1->2->3->4 returns 2 (first middle)
 - Mixing up first vs second middle - even count has TWO middles; pick the correct one for your problem.
 - Starting both at head when even count handling matters - shift fast by one to choose first middle.
 
+**Example problems:**
+- [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/)
+- [Palindrome Linked List](https://leetcode.com/problems/palindrome-linked-list/)
+- [Reorder List](https://leetcode.com/problems/reorder-list/)
+- [Sort List](https://leetcode.com/problems/sort-list/)
+- [Delete the Middle Node of a Linked List](https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/)
+
 ---
 
 ## 6. Two-Pointer with Gap (Kth from End)
@@ -358,6 +393,13 @@ return dummy.next;
 **Common bugs:**
 - Off-by-one on the gap - test mentally with a list of 5 and n = 2.
 - Not using dummy - head deletion becomes a special case.
+
+**Example problems:**
+- [Remove Nth Node From End of List](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+- [Swapping Nodes in a Linked List](https://leetcode.com/problems/swapping-nodes-in-a-linked-list/)
+- [Rotate List](https://leetcode.com/problems/rotate-list/)
+- [Delete the Middle Node of a Linked List](https://leetcode.com/problems/delete-the-middle-node-of-a-linked-list/) (cross-ref Pattern 5)
+- [Middle of the Linked List](https://leetcode.com/problems/middle-of-the-linked-list/) (cross-ref Pattern 5)
 
 ---
 
@@ -411,6 +453,13 @@ return i == s.length();
 - For in-place merge: starting from the FRONT - overwrites unprocessed elements. Always merge backwards.
 - For intersection: forgetting dedup (if input has dupes and you want unique output).
 
+**Example problems:**
+- [Merge Sorted Array](https://leetcode.com/problems/merge-sorted-array/)
+- [Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays/)
+- [Intersection of Two Arrays II](https://leetcode.com/problems/intersection-of-two-arrays-ii/)
+- [Is Subsequence](https://leetcode.com/problems/is-subsequence/)
+- [Merge Two Sorted Lists](https://leetcode.com/problems/merge-two-sorted-lists/)
+
 ---
 
 ## 8. Fixed-Window Sliding (Two Pointers at Constant Gap)
@@ -449,6 +498,13 @@ return out;
 
 For more on sliding window, see arrays.md pattern 3 and strings.md pattern 2.
 
+**Example problems:**
+- [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
+- [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+- [Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+- [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+- [Repeated DNA Sequences](https://leetcode.com/problems/repeated-dna-sequences/)
+
 ---
 
 ## 9. Variable-Window Sliding (Two Pointers, Dynamic Gap)
@@ -474,6 +530,13 @@ for (int r = 0; r < s.length(); r++) {
 ```
 
 For deeper coverage, see strings.md pattern 2 and arrays.md pattern 3.
+
+**Example problems:**
+- [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+- [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+- [Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/)
+- [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/)
+- [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
 
 ---
 
@@ -517,6 +580,13 @@ return out;
 **Common bugs:**
 - Forgetting duplicate skips at THREE places (outer i, inner l, inner r) - get duplicate triplets in output.
 - For 3-Sum closest: not updating best when difference is smaller, even if not zero.
+
+**Example problems:**
+- [3Sum](https://leetcode.com/problems/3sum/)
+- [3Sum Closest](https://leetcode.com/problems/3sum-closest/)
+- [4Sum](https://leetcode.com/problems/4sum/)
+- [3Sum Smaller](https://leetcode.com/problems/3sum-smaller/)
+- [Valid Triangle Number](https://leetcode.com/problems/valid-triangle-number/)
 
 ---
 
@@ -562,6 +632,13 @@ public String reverseVowels(String s) {
 **Common bugs:**
 - `String` is immutable - can't reverse in place. Convert to `char[]` first.
 - For "rotate array by K": forgetting `k %= n` - large K wraps around.
+
+**Example problems:**
+- [Reverse String](https://leetcode.com/problems/reverse-string/)
+- [Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
+- [Rotate Array](https://leetcode.com/problems/rotate-array/)
+- [Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string/)
+- [Reverse Words in a String III](https://leetcode.com/problems/reverse-words-in-a-string-iii/)
 
 ---
 
