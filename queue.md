@@ -167,7 +167,14 @@ merging levels together.
   BFS — allows the same node to be enqueued multiple times by different neighbors
   before it's ever processed, wasting work and occasionally causing incorrect distances.
 
-**Example problems:** Binary Tree Level Order Traversal, Binary Tree Right Side View, Minimum Depth of Binary Tree, Word Ladder. See `graphs/bfs-dfs-traversal.md` for the full general-graph BFS treatment (adjacency lists/matrices, connected components).
+**Example problems:**
+- [Binary Tree Level Order Traversal](https://leetcode.com/problems/binary-tree-level-order-traversal/)
+- [Binary Tree Right Side View](https://leetcode.com/problems/binary-tree-right-side-view/)
+- [Minimum Depth of Binary Tree](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+- [Word Ladder](https://leetcode.com/problems/word-ladder/)
+- [Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree/)
+
+See `graphs/bfs-dfs-traversal.md` for the full general-graph BFS treatment (adjacency lists/matrices, connected components).
 
 ---
 
@@ -229,7 +236,12 @@ runs means all sources expand outward simultaneously, one shared "ring" per minu
   gives the wrong "time," not just slower code.
 - Forgetting to decrement/track the remaining count (`fresh`) to detect the unreachable case.
 
-**Example problems:** Rotting Oranges, Walls and Gates, 01 Matrix, Shortest Path in Binary Matrix.
+**Example problems:**
+- [Rotting Oranges](https://leetcode.com/problems/rotting-oranges/)
+- [Walls and Gates](https://leetcode.com/problems/walls-and-gates/)
+- [01 Matrix](https://leetcode.com/problems/01-matrix/)
+- [Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/)
+- [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/)
 
 ---
 
@@ -285,7 +297,12 @@ how this pattern doubles as cycle detection for free.
 - Forgetting the final "did we process everything?" check — this is the only way to
   detect a cycle in this formulation.
 
-**Example problems:** Course Schedule I/II, Alien Dictionary, Sequence Reconstruction, Minimum Height Trees.
+**Example problems:**
+- [Course Schedule](https://leetcode.com/problems/course-schedule/)
+- [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/)
+- [Alien Dictionary](https://leetcode.com/problems/alien-dictionary/)
+- [Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction/)
+- [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/)
 
 ---
 
@@ -317,7 +334,14 @@ int[] maxSlidingWindow(int[] nums, int k) {
 }
 ```
 
-**Example problems:** Sliding Window Maximum, Shortest Subarray with Sum at Least K.
+**Example problems:**
+- [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+- [Shortest Subarray with Sum at Least K](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/)
+- [Jump Game VI](https://leetcode.com/problems/jump-game-vi/)
+- [Constrained Subsequence Sum](https://leetcode.com/problems/constrained-subsequence-sum/)
+- [Max Value of Equation](https://leetcode.com/problems/max-value-of-equation/)
+
+Full why-this-shape walkthrough lives in `stack.md` pattern #11.
 
 ---
 
@@ -358,7 +382,12 @@ of O(n log n) for a full sort — a real complexity win when k is small relative
 - Forgetting to `poll()` once size exceeds K — the heap silently grows unbounded instead
   of staying capped.
 
-**Example problems:** Kth Largest Element in an Array, Top K Frequent Elements, K Closest Points to Origin, Kth Smallest Element in a Sorted Matrix.
+**Example problems:**
+- [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
+- [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
+- [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
+- [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/)
+- [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/)
 
 ---
 
@@ -404,7 +433,12 @@ across all lists, K = number of lists).
 - Forgetting to re-offer `smallest.next` — silently drops the rest of that list.
 - Comparator direction mistakes when merging in descending order instead of ascending.
 
-**Example problems:** Merge k Sorted Lists, Merge k Sorted Arrays, Smallest Range Covering Elements from K Lists.
+**Example problems:**
+- [Merge k Sorted Lists](https://leetcode.com/problems/merge-k-sorted-lists/)
+- [Smallest Range Covering Elements from K Lists](https://leetcode.com/problems/smallest-range-covering-elements-from-k-lists/)
+- [Find K Pairs with Smallest Sums](https://leetcode.com/problems/find-k-pairs-with-smallest-sums/)
+- [Kth Smallest Element in a Sorted Matrix](https://leetcode.com/problems/kth-smallest-element-in-a-sorted-matrix/) (mergeable-rows variant)
+- [Ugly Number II](https://leetcode.com/problems/ugly-number-ii/) (merge-k-sequences flavor)
 
 ---
 
@@ -456,7 +490,12 @@ middle candidates are always sitting at O(1)-accessible heap tops.
 - Using the wrong heap type for either half (both must-have `lowerHalf` as max-heap,
   `upperHalf` as min-heap — swapping them silently gives nonsense results, not a crash).
 
-**Example problems:** Find Median from Data Stream, Sliding Window Median, IPO (two-heap variant with a different pairing rule).
+**Example problems:**
+- [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/)
+- [Sliding Window Median](https://leetcode.com/problems/sliding-window-median/)
+- [IPO](https://leetcode.com/problems/ipo/) (two-heap variant with a different pairing rule)
+- [Maximum Performance of a Team](https://leetcode.com/problems/maximum-performance-of-a-team/) (heap + running aggregate)
+- [Find Right Interval](https://leetcode.com/problems/find-right-interval/) (heap-assisted variant)
 
 ---
 
@@ -511,7 +550,12 @@ pure FIFO-by-time relationship.
 - Forgetting idle time counts toward `time` even when both structures still have items
   but nothing is immediately schedulable.
 
-**Example problems:** Task Scheduler, Rearrange String k Distance Apart, Reorganize String.
+**Example problems:**
+- [Task Scheduler](https://leetcode.com/problems/task-scheduler/)
+- [Rearrange String k Distance Apart](https://leetcode.com/problems/rearrange-string-k-distance-apart/)
+- [Reorganize String](https://leetcode.com/problems/reorganize-string/)
+- [Distant Barcodes](https://leetcode.com/problems/distant-barcodes/)
+- [Maximum Number of Eaten Apples](https://leetcode.com/problems/maximum-number-of-eaten-apples/) (greedy + min-heap eviction, same expiry-tracking family)
 
 ---
 
@@ -570,7 +614,12 @@ giving true O(1) enqueue/dequeue with no wasted space and no shifting.
   genuinely ambiguous whether the queue is empty or completely full when `head == tail`.
 - Forgetting the modulo wrap on `Rear()`'s index calculation.
 
-**Example problems:** Design Circular Queue, Design Circular Deque, Design Hit Counter, Moving Average from Data Stream.
+**Example problems:**
+- [Design Circular Queue](https://leetcode.com/problems/design-circular-queue/)
+- [Design Circular Deque](https://leetcode.com/problems/design-circular-deque/)
+- [Design Hit Counter](https://leetcode.com/problems/design-hit-counter/)
+- [Moving Average from Data Stream](https://leetcode.com/problems/moving-average-from-data-stream/)
+- [Design Front Middle Back Queue](https://leetcode.com/problems/design-front-middle-back-queue/)
 
 ---
 
@@ -617,7 +666,12 @@ push is O(1) and pop is amortized O(1) but occasionally O(n).
 - Rotating the *wrong* number of times (`queue.size()` instead of `queue.size() - 1`) —
   either under-rotates (top is wrong) or spins all the way back to the original order.
 
-**Example problems:** Implement Stack using Queues, Implement Queue using Stacks (`stack.md` pattern #8, the mirror image).
+**Example problems:**
+- [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/)
+- [Implement Queue using Stacks](https://leetcode.com/problems/implement-queue-using-stacks/) (`stack.md` pattern #8, the mirror image)
+- [Design Circular Deque](https://leetcode.com/problems/design-circular-deque/)
+- [Design Front Middle Back Queue](https://leetcode.com/problems/design-front-middle-back-queue/)
+- [Dinner Plate Stacks](https://leetcode.com/problems/dinner-plate-stacks/) (multi-structure amortized design, same family)
 
 ---
 
@@ -663,7 +717,12 @@ manual `synchronized`/`wait()`/`notifyAll()` boilerplate that's easy to get subt
 - Not having a shutdown/poison-pill strategy, leaving consumer threads blocked forever
   on `take()` when producers are done.
 
-**Example problems:** Classic Producer-Consumer, Design a rate limiter, Design a thread pool's task queue.
+**Example problems:**
+- [Design Bounded Blocking Queue](https://leetcode.com/problems/design-bounded-blocking-queue/)
+- [Print in Order](https://leetcode.com/problems/print-in-order/) (thread coordination basics)
+- [Print FooBar Alternately](https://leetcode.com/problems/print-foobar-alternately/)
+- [Building H2O](https://leetcode.com/problems/building-h2o/) (producer-consumer with multiple producer types)
+- [The Dining Philosophers](https://leetcode.com/problems/the-dining-philosophers/) (classic concurrency coordination, adjacent problem family)
 
 ---
 
