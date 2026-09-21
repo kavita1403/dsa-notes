@@ -110,6 +110,13 @@ return new int[]{-1, -1};
 - Duplicate handling in 3-Sum - either skip in 3 places (above) or use a Set; skipping is faster.
 - For trap-rain-water two-pointer: comparing `arr[l]` and `arr[r]` is enough; no need to compute both maxes upfront.
 
+**Example problems:**
+- [Two Sum II - Input Array Is Sorted](https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/)
+- [3Sum](https://leetcode.com/problems/3sum/)
+- [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+- [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
+- [4Sum](https://leetcode.com/problems/4sum/)
+
 ---
 
 ## 2. Two Pointers (same direction - read/write)
@@ -148,6 +155,13 @@ return write;             // new length
 **Common bugs:**
 - For Dutch flag, when swapping with `high`, do NOT increment `mid` - the swapped value hasn't been processed.
 - Resetting elements after `write` for "move zeros" is required if the problem says original length must equal new length with zeros at end.
+
+**Example problems:**
+- [Remove Duplicates from Sorted Array](https://leetcode.com/problems/remove-duplicates-from-sorted-array/)
+- [Remove Duplicates from Sorted Array II](https://leetcode.com/problems/remove-duplicates-from-sorted-array-ii/)
+- [Move Zeroes](https://leetcode.com/problems/move-zeroes/)
+- [Sort Colors](https://leetcode.com/problems/sort-colors/)
+- [Remove Element](https://leetcode.com/problems/remove-element/)
 
 ---
 
@@ -194,6 +208,13 @@ return best == Integer.MAX_VALUE ? 0 : best;
 - Forgetting `r >= k - 1` guard for fixed window before recording answer.
 - Using sliding window on arrays with **negative numbers** for "sum >= target" - sums don't grow monotonically with r. Use prefix sum + monotonic deque or sorted structure instead.
 
+**Example problems:**
+- [Maximum Average Subarray I](https://leetcode.com/problems/maximum-average-subarray-i/)
+- [Minimum Size Subarray Sum](https://leetcode.com/problems/minimum-size-subarray-sum/)
+- [Fruit Into Baskets](https://leetcode.com/problems/fruit-into-baskets/)
+- [Max Consecutive Ones III](https://leetcode.com/problems/max-consecutive-ones-iii/)
+- [Longest Subarray of 1's After Deleting One Element](https://leetcode.com/problems/longest-subarray-of-1s-after-deleting-one-element/)
+
 ---
 
 ## 4. Kadane's Algorithm (max subarray sum)
@@ -234,6 +255,13 @@ return best;
 **Common bugs:**
 - Initializing `best = 0` instead of `arr[0]` breaks all-negative inputs.
 - For circular, forgetting the all-negative edge case.
+
+**Example problems:**
+- [Maximum Subarray](https://leetcode.com/problems/maximum-subarray/)
+- [Maximum Product Subarray](https://leetcode.com/problems/maximum-product-subarray/)
+- [Maximum Sum Circular Subarray](https://leetcode.com/problems/maximum-sum-circular-subarray/)
+- [K-Concatenation Maximum Sum](https://leetcode.com/problems/k-concatenation-maximum-sum/)
+- [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
 
 ---
 
@@ -290,6 +318,13 @@ int rectSum = prefix[r2 + 1][c2 + 1] - prefix[r1][c2 + 1] - prefix[r2 + 1][c1] +
 - Forgetting `prefixCount.put(0, 1)` - subarrays starting at index 0 with sum K go uncounted.
 - For 2D: inclusion-exclusion sign error - subtract once, add the doubly-subtracted region back.
 
+**Example problems:**
+- [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
+- [Range Sum Query - Immutable](https://leetcode.com/problems/range-sum-query-immutable/)
+- [Range Sum Query 2D - Immutable](https://leetcode.com/problems/range-sum-query-2d-immutable/)
+- [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/)
+- [Contiguous Array](https://leetcode.com/problems/contiguous-array/)
+
 ---
 
 ## 6. Cyclic Sort (in-place rearrangement for [1..n])
@@ -326,6 +361,13 @@ for (int j = 0; j < n; j++) {
 **Common bugs:**
 - Using `for (int i = 0; i < n; i++)` instead of `while` - after swap, the same index `i` may need another swap.
 - For "first missing positive", filtering out invalid values before the swap is required.
+
+**Example problems:**
+- [Find All Numbers Disappeared in an Array](https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/)
+- [Find the Duplicate Number](https://leetcode.com/problems/find-the-duplicate-number/)
+- [First Missing Positive](https://leetcode.com/problems/first-missing-positive/)
+- [Set Mismatch](https://leetcode.com/problems/set-mismatch/)
+- [Missing Number](https://leetcode.com/problems/missing-number/)
 
 ---
 
@@ -387,6 +429,13 @@ return l < n && arr[l] == target ? l : -1;
 - Off-by-one in loop bounds: `l <= r` vs `l < r` depends on what `r` means. Be consistent.
 - For rotated sorted with duplicates - the algorithm above can degrade to O(n); handle equal case by `l++` to skip.
 
+**Example problems:**
+- [Search in Rotated Sorted Array](https://leetcode.com/problems/search-in-rotated-sorted-array/)
+- [Find Minimum in Rotated Sorted Array](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+- [Find Peak Element](https://leetcode.com/problems/find-peak-element/)
+- [Search Insert Position](https://leetcode.com/problems/search-insert-position/)
+- [Find First and Last Position of Element in Sorted Array](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
+
 ---
 
 ## 8. Binary Search on Answer
@@ -427,6 +476,13 @@ private boolean feasible(int[] w, int days, int cap) {
 - Wrong `lo` / `hi` bounds: `lo` must be feasible-OR-needs-checking, `hi` must always be feasible.
 - Using `hi = mid - 1` when looking for leftmost feasible - skip the answer. Use `hi = mid`.
 - Forgetting that the feasibility check must be O(n) (or close); otherwise overall O(n^2) or worse.
+
+**Example problems:**
+- [Capacity To Ship Packages Within D Days](https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/)
+- [Koko Eating Bananas](https://leetcode.com/problems/koko-eating-bananas/)
+- [Split Array Largest Sum](https://leetcode.com/problems/split-array-largest-sum/)
+- [Magnetic Force Between Two Balls in a Basket](https://leetcode.com/problems/magnetic-force-between-two-balls-in-a-basket/)
+- [Minimum Number of Days to Make m Bouquets](https://leetcode.com/problems/minimum-number-of-days-to-make-m-bouquets/)
 
 ---
 
@@ -479,6 +535,13 @@ for (int i = 0; i <= n; i++) {
 - For histogram, forgetting the sentinel `0` at end - never flushes remaining stack.
 - Confusing "next greater" (use decreasing stack) with "previous greater" (use decreasing stack, iterate right-to-left or use stack content differently).
 
+**Example problems:**
+- [Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/)
+- [Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
+- [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+- [Online Stock Span](https://leetcode.com/problems/online-stock-span/)
+- [Sum of Subarray Minimums](https://leetcode.com/problems/sum-of-subarray-minimums/)
+
 ---
 
 ## 10. Monotonic Deque (sliding window max/min)
@@ -511,6 +574,13 @@ return result;
 **Common bugs:**
 - Confusing stack (only one end) with deque (both ends needed for window expiry).
 - For window size K, expiry check uses `<= i - k`, not `< i - k`.
+
+**Example problems:**
+- [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+- [Shortest Subarray with Sum at Least K](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/)
+- [Constrained Subsequence Sum](https://leetcode.com/problems/constrained-subsequence-sum/)
+- [Jump Game VI](https://leetcode.com/problems/jump-game-vi/)
+- [Max Value of Equation](https://leetcode.com/problems/max-value-of-equation/)
 
 ---
 
@@ -553,6 +623,13 @@ return String.join("", strs);
 - Forgetting to handle empty input.
 - Sorting by START vs END changes the algorithm - mix them up and the greedy fails.
 - Using `a[0] - b[0]` in comparator with values that may differ by >= `Integer.MAX_VALUE` - use `Integer.compare(a[0], b[0])`.
+
+**Example problems:**
+- [Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+- [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+- [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)
+- [Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
+- [Largest Number](https://leetcode.com/problems/largest-number/)
 
 ---
 
@@ -598,6 +675,13 @@ return best;
 **Common bugs:**
 - Putting value in map BEFORE checking complement - same element matches itself.
 - For longest-consecutive, NOT checking `!set.contains(x - 1)` first - turns O(n) into O(n^2).
+
+**Example problems:**
+- [Two Sum](https://leetcode.com/problems/two-sum/)
+- [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+- [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)
+- [Contains Duplicate III](https://leetcode.com/problems/contains-duplicate-iii/)
+- [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
 
 ---
 
@@ -650,6 +734,13 @@ return minHeap.peek();
 **Common bugs:**
 - Quickselect worst case O(n^2) on already-sorted input with first/last pivot. Use random pivot or median-of-three.
 - For Kth LARGEST in heap: use a MIN-heap of size K (keep top K, pop smallest when overflow). The opposite for Kth smallest.
+
+**Example problems:**
+- [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
+- [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
+- [Find Median from Data Stream](https://leetcode.com/problems/find-median-from-data-stream/)
+- [Wiggle Sort II](https://leetcode.com/problems/wiggle-sort-ii/)
+- [Sort Colors](https://leetcode.com/problems/sort-colors/) (cross-ref Pattern 2, same partition idea)
 
 ---
 
@@ -729,6 +820,13 @@ if (firstColHasZero) for (int i = 0; i < m; i++) matrix[i][0] = 0;
 - For spiral, forgetting `if (top <= bot)` and `if (left <= right)` guards after shrinking - double-counts the middle row/col.
 - For set zeros, the in-place marker approach requires careful order - mark first, then zero, finally zero out the marker row/col.
 
+**Example problems:**
+- [Rotate Image](https://leetcode.com/problems/rotate-image/)
+- [Spiral Matrix](https://leetcode.com/problems/spiral-matrix/)
+- [Set Matrix Zeroes](https://leetcode.com/problems/set-matrix-zeroes/)
+- [Search a 2D Matrix](https://leetcode.com/problems/search-a-2d-matrix/)
+- [Search a 2D Matrix II](https://leetcode.com/problems/search-a-2d-matrix-ii/)
+
 ---
 
 ## 15 (advanced). Segment Tree / Fenwick Tree
@@ -792,6 +890,13 @@ int query(int node, int l, int r, int ql, int qr) {
 - Fenwick is 1-indexed; off-by-one errors are easy.
 - Segment tree size: `4 * n` is the safe upper bound; smaller can overflow on non-power-of-2 sizes.
 - Forgetting lazy propagation when updates are range-based.
+
+**Example problems:**
+- [Range Sum Query - Mutable](https://leetcode.com/problems/range-sum-query-mutable/)
+- [Count of Smaller Numbers After Self](https://leetcode.com/problems/count-of-smaller-numbers-after-self/)
+- [Range Sum Query 2D - Mutable](https://leetcode.com/problems/range-sum-query-2d-mutable/)
+- [My Calendar III](https://leetcode.com/problems/my-calendar-iii/)
+- [The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/)
 
 ---
 
