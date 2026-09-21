@@ -85,6 +85,13 @@ return true;
 - Calling `s.charAt(l)` on a String inside a hot loop is fine (O(1)) but if you mutate, `char[] arr = s.toCharArray()` once and work on that.
 - Off-by-one when `n` is odd vs even - both `l < r` AND `l <= r` (rarely) need care; `l < r` is correct for symmetric checks.
 
+**Example problems:**
+- [Valid Palindrome](https://leetcode.com/problems/valid-palindrome/)
+- [Reverse String](https://leetcode.com/problems/reverse-string/)
+- [Valid Palindrome II](https://leetcode.com/problems/valid-palindrome-ii/)
+- [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare/)
+- [Reverse Vowels of a String](https://leetcode.com/problems/reverse-vowels-of-a-string/)
+
 ---
 
 ## 2. Sliding Window (variable + fixed size)
@@ -141,6 +148,13 @@ return false;
 - For fixed-size: forgetting the `r >= k` guard - drops chars that never entered.
 - For "min window", returning `r - l + 1` from the WRONG l (after shrink past optimum). Capture `bestL`, `bestR` separately when answer improves.
 
+**Example problems:**
+- [Longest Substring Without Repeating Characters](https://leetcode.com/problems/longest-substring-without-repeating-characters/)
+- [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+- [Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+- [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+- [Longest Repeating Character Replacement](https://leetcode.com/problems/longest-repeating-character-replacement/)
+
 ---
 
 ## 3. Frequency Map / Hashing
@@ -183,6 +197,13 @@ for (char c : s.toCharArray()) freq.merge(c, 1, Integer::sum);
 - Using `Map` when `int[26]` would do (10x slower).
 - Forgetting to handle case (`'A'` vs `'a'`) - normalize early.
 - Mutating a key's count then forgetting to `remove()` when it hits 0 - `containsKey` later returns true incorrectly.
+
+**Example problems:**
+- [Valid Anagram](https://leetcode.com/problems/valid-anagram/)
+- [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+- [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
+- [Ransom Note](https://leetcode.com/problems/ransom-note/)
+- [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/) (cross-ref Pattern 2)
 
 ---
 
@@ -245,6 +266,13 @@ return cur.toString();
 - Using `Stack` (legacy, synchronized) instead of `ArrayDeque` - slower and inherits from Vector.
 - For multi-digit numbers, forgetting to accumulate (`k = k * 10 + (c - '0')`).
 - For `decodeString`, mixing up the order: count goes on its stack BEFORE string goes on its stack (LIFO order matters).
+
+**Example problems:**
+- [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
+- [Decode String](https://leetcode.com/problems/decode-string/)
+- [Simplify Path](https://leetcode.com/problems/simplify-path/)
+- [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+- [Remove K Digits](https://leetcode.com/problems/remove-k-digits/)
 
 ---
 
@@ -324,6 +352,13 @@ return dp[m][n];
 - Forgetting base case (`dp[0][0]`, the empty-prefix row/column).
 - Trying to reduce to 1D dp on a problem that needs the diagonal (`dp[i-1][j-1]`) - cache the diagonal in a temp variable.
 
+**Example problems:**
+- [Edit Distance](https://leetcode.com/problems/edit-distance/)
+- [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+- [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
+- [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)
+- [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
+
 ---
 
 ## 6. Palindrome Patterns (Expand Around Center / DP / Manacher's)
@@ -392,6 +427,13 @@ return dp[0][n - 1];
 - Mixing length and index: `start = i - (len - 1) / 2` is the correct formula (you can re-derive: center at i, half-length is `(len-1)/2` left of center).
 - For LPS-on-subsequence, forgetting `dp[i][i] = 1` base case.
 - Manacher's: forgetting to clamp the mirror radius.
+
+**Example problems:**
+- [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+- [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)
+- [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/)
+- [Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/)
+- [Palindrome Partitioning II](https://leetcode.com/problems/palindrome-partitioning-ii/)
 
 ---
 
@@ -462,6 +504,13 @@ private boolean isValid(String p) {
 - Using `String` concatenation in the recursive call - O(n) copies per call, blows up complexity. Use `StringBuilder` + undo.
 - Adding `cur` (the same SB reference) to the output list - everyone shares the same string state. Must `cur.toString()`.
 
+**Example problems:**
+- [Generate Parentheses](https://leetcode.com/problems/generate-parentheses/)
+- [Restore IP Addresses](https://leetcode.com/problems/restore-ip-addresses/)
+- [Letter Combinations of a Phone Number](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
+- [Word Break II](https://leetcode.com/problems/word-break-ii/)
+- [Remove Invalid Parentheses](https://leetcode.com/problems/remove-invalid-parentheses/)
+
 ---
 
 ## 8. Trie / Prefix Tree (specialized for strings)
@@ -516,6 +565,13 @@ class Trie {
 - Forgetting to mark `isWord = true` at the end of insert - `search` always returns false even when prefix exists.
 - Using `Map<Character, TrieNode>` when `TrieNode[26]` would do (memory + cache hit).
 - For unicode, the array approach fails - must use map.
+
+**Example problems:**
+- [Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/)
+- [Word Search II](https://leetcode.com/problems/word-search-ii/)
+- [Replace Words](https://leetcode.com/problems/replace-words/)
+- [Design Add and Search Words Data Structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
+- [Design Search Autocomplete System](https://leetcode.com/problems/design-search-autocomplete-system/)
 
 ---
 
@@ -575,6 +631,13 @@ private int[] buildLps(String p) {
 - Off-by-one in LPS construction (1-indexed vs 0-indexed).
 - Falling back too far on mismatch - must use `lps[j - 1]`, not `lps[j]`.
 - For Rabin-Karp: forgetting to handle hash collisions with a verification step.
+
+**Example problems:**
+- [Find the Index of the First Occurrence in a String](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/)
+- [Repeated Substring Pattern](https://leetcode.com/problems/repeated-substring-pattern/)
+- [Shortest Palindrome](https://leetcode.com/problems/shortest-palindrome/)
+- [Longest Happy Prefix](https://leetcode.com/problems/longest-happy-prefix/)
+- [Repeated String Match](https://leetcode.com/problems/repeated-string-match/)
 
 ---
 
@@ -637,6 +700,13 @@ public List<Integer> partitionLabels(String s) {
 - For partition labels: confusing `end` vs `lastIndex[c]` - you track the FARTHEST end seen so far, not the current char's last.
 - Greedy without proof: always sanity-check that local optimum aligns with global. Many string problems look greedy but actually need DP.
 
+**Example problems:**
+- [Reorganize String](https://leetcode.com/problems/reorganize-string/)
+- [Partition Labels](https://leetcode.com/problems/partition-labels/)
+- [Task Scheduler](https://leetcode.com/problems/task-scheduler/)
+- [Remove K Digits](https://leetcode.com/problems/remove-k-digits/) (cross-ref Pattern 4)
+- [Smallest Subsequence of Distinct Characters](https://leetcode.com/problems/smallest-subsequence-of-distinct-characters/)
+
 ---
 
 ## 11 (bonus). Number-String Conversion
@@ -690,6 +760,13 @@ public int myAtoi(String s) {
 - **Overflow**: always cast to `long` (or check before multiply) when accumulating digits. `Integer.MAX_VALUE = 2_147_483_647` is 10 digits - one extra digit overflows.
 - For atoi: forgetting whitespace stripping, or accepting `"+-5"` (multiple signs).
 - For Roman: not handling the subtractive case (treating `IV` as `1 + 5 = 6` instead of `-1 + 5 = 4`).
+
+**Example problems:**
+- [Roman to Integer](https://leetcode.com/problems/roman-to-integer/)
+- [Integer to Roman](https://leetcode.com/problems/integer-to-roman/)
+- [String to Integer (atoi)](https://leetcode.com/problems/string-to-integer-atoi/)
+- [Count and Say](https://leetcode.com/problems/count-and-say/)
+- [Integer to English Words](https://leetcode.com/problems/integer-to-english-words/)
 
 ---
 
