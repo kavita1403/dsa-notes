@@ -53,7 +53,12 @@ public int[][] merge(int[][] intervals) {
 
 **Common pitfalls:** forgetting to sort first; comparing the new interval against the *original* last interval instead of the *updated/extended* end value.
 
-**Example problems:** Merge Intervals.
+**Example problems:**
+- [Merge Intervals](https://leetcode.com/problems/merge-intervals/)
+- [Interval List Intersections](https://leetcode.com/problems/interval-list-intersections/)
+- [Employee Free Time](https://leetcode.com/problems/employee-free-time/)
+- [Insert Interval](https://leetcode.com/problems/insert-interval/) (cross-ref Pattern 2)
+- [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/) (cross-ref Pattern 3)
 
 ---
 
@@ -96,7 +101,12 @@ public int[][] insert(int[][] intervals, int[] newInterval) {
 
 **Common pitfalls:** trying to treat this as "just re-run Merge Intervals on everything" — works, but loses the O(n) zone-splitting benefit; off-by-one between `<` and `<=` at zone boundaries.
 
-**Example problems:** Insert Interval.
+**Example problems:**
+- [Insert Interval](https://leetcode.com/problems/insert-interval/)
+- [My Calendar I](https://leetcode.com/problems/my-calendar-i/)
+- [Data Stream as Disjoint Intervals](https://leetcode.com/problems/data-stream-as-disjoint-intervals/)
+- [Range Module](https://leetcode.com/problems/range-module/)
+- [Merge Intervals](https://leetcode.com/problems/merge-intervals/) (cross-ref Pattern 1)
 
 ---
 
@@ -129,7 +139,12 @@ public int eraseOverlapIntervals(int[][] intervals) {
 
 **Common pitfalls:** sorting by start instead of end — this is the single most common mistake on this exact problem, since most other interval problems train you to default to sort-by-start.
 
-**Example problems:** Non-overlapping Intervals, Maximum Length of Pair Chain.
+**Example problems:**
+- [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/)
+- [Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/)
+- [Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
+- [Remove Covered Intervals](https://leetcode.com/problems/remove-covered-intervals/)
+- [Video Stitching](https://leetcode.com/problems/video-stitching/)
 
 ---
 
@@ -157,7 +172,12 @@ public boolean canAttendMeetings(int[][] intervals) {
 
 **Common pitfalls:** using `<=` instead of `<` (or vice versa) at the touching-endpoint boundary, silently flipping the answer for back-to-back meetings.
 
-**Example problems:** Meeting Rooms.
+**Example problems:**
+- [Meeting Rooms](https://leetcode.com/problems/meeting-rooms/)
+- [Car Pooling](https://leetcode.com/problems/car-pooling/)
+- [My Calendar I](https://leetcode.com/problems/my-calendar-i/)
+- [Merge Intervals](https://leetcode.com/problems/merge-intervals/) (cross-ref Pattern 1)
+- [Non-overlapping Intervals](https://leetcode.com/problems/non-overlapping-intervals/) (cross-ref Pattern 3)
 
 ---
 
@@ -202,7 +222,12 @@ public int minMeetingRooms(int[][] intervals) {
 - Counting overlapping *pairs* instead of *peak concurrency* — these give different (wrong) answers, e.g. `[0,30],[5,10],[15,20]` has 2 pairwise overlaps with the same meeting but never needs more than 2 rooms.
 - Missing the tie-break entirely in the comparator, which silently breaks back-to-back meetings.
 
-**Example problems:** Meeting Rooms II.
+**Example problems:**
+- [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/)
+- [My Calendar II](https://leetcode.com/problems/my-calendar-ii/)
+- [Car Pooling](https://leetcode.com/problems/car-pooling/)
+- [The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/)
+- [Minimum Number of Arrows to Burst Balloons](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/) (cross-ref Pattern 3)
 
 ---
 
@@ -253,4 +278,9 @@ public int[] minInterval(int[][] intervals, int[] queries) {
 
 **Common pitfalls:** pushing an expired interval back into the heap "to be safe" — this re-introduces the exact wasted, repeated work the heap-discard step is designed to eliminate; forgetting to track each query's original index before sorting, so answers get written to the wrong output position.
 
-**Example problems:** Minimum Interval to Include Each Query.
+**Example problems:**
+- [Minimum Interval to Include Each Query](https://leetcode.com/problems/minimum-interval-to-include-each-query/)
+- [The Skyline Problem](https://leetcode.com/problems/the-skyline-problem/)
+- [Employee Free Time](https://leetcode.com/problems/employee-free-time/)
+- [Meeting Rooms II](https://leetcode.com/problems/meeting-rooms-ii/) (cross-ref Pattern 5)
+- [Car Pooling](https://leetcode.com/problems/car-pooling/) (cross-ref Pattern 4)
