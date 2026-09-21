@@ -158,7 +158,13 @@ boolean isValid(String s) {
 - Forgetting the final `stack.isEmpty()` check — a string like `"((()"` passes every
   individual match but leaves an unmatched opener.
 
-**Example problems:** Valid Parentheses, Remove Invalid Parentheses, Minimum Add to Make Parentheses Valid, Check if word is valid after substitutions.
+**Example problems:**
+- [Valid Parentheses](https://leetcode.com/problems/valid-parentheses/)
+- [Minimum Add to Make Parentheses Valid](https://leetcode.com/problems/minimum-add-to-make-parentheses-valid/)
+- [Minimum Remove to Make Valid Parentheses](https://leetcode.com/problems/minimum-remove-to-make-valid-parentheses/)
+- [Longest Valid Parentheses](https://leetcode.com/problems/longest-valid-parentheses/)
+- [Check if Word Is Valid After Substitutions](https://leetcode.com/problems/check-if-word-is-valid-after-substitutions/)
+- [Remove Invalid Parentheses](https://leetcode.com/problems/remove-invalid-parentheses/)
 
 ---
 
@@ -206,7 +212,13 @@ index is pushed once and popped at most once.
 - Getting the comparison direction backwards (next *greater* vs next *smaller* flips
   `<` to `>` in the `while` condition).
 
-**Example problems:** Next Greater Element I/II, Daily Temperatures, Next Smaller Element, Sum of Subarray Minimums.
+**Example problems:**
+- [Next Greater Element I](https://leetcode.com/problems/next-greater-element-i/)
+- [Next Greater Element II](https://leetcode.com/problems/next-greater-element-ii/)
+- [Daily Temperatures](https://leetcode.com/problems/daily-temperatures/)
+- [Sum of Subarray Minimums](https://leetcode.com/problems/sum-of-subarray-minimums/)
+- [132 Pattern](https://leetcode.com/problems/132-pattern/)
+- [Remove K Digits](https://leetcode.com/problems/remove-k-digits/)
 
 ---
 
@@ -254,7 +266,12 @@ stack fixes this by remembering the min *as of every push*, so popping automatic
 - Keeping only one min value instead of a full parallel stack — works until you pop the min.
 - Letting `stack` and `minStack` sizes drift out of sync (always push/pop both together).
 
-**Example problems:** Min Stack, Max Stack, Design a stack with increment operation.
+**Example problems:**
+- [Min Stack](https://leetcode.com/problems/min-stack/)
+- [Max Stack](https://leetcode.com/problems/max-stack/)
+- [Design a Stack With Increment Operation](https://leetcode.com/problems/design-a-stack-with-increment-operation/)
+- [Maximum Frequency Stack](https://leetcode.com/problems/maximum-frequency-stack/)
+- [Dinner Plate Stacks](https://leetcode.com/problems/dinner-plate-stacks/)
 
 ---
 
@@ -311,7 +328,12 @@ and pending signs/operators, pushed/popped as parentheses open and close.
 - Swapping operand order on subtraction/division (`b - a` instead of `a - b`).
 - Off-by-one errors when parsing multi-character numbers out of a raw infix string.
 
-**Example problems:** Evaluate Reverse Polish Notation, Basic Calculator I/II/III, Decode Ways-adjacent parsing problems.
+**Example problems:**
+- [Evaluate Reverse Polish Notation](https://leetcode.com/problems/evaluate-reverse-polish-notation/)
+- [Basic Calculator](https://leetcode.com/problems/basic-calculator/)
+- [Basic Calculator II](https://leetcode.com/problems/basic-calculator-ii/)
+- [Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/)
+- [Ternary Expression Parser](https://leetcode.com/problems/ternary-expression-parser/)
 
 ---
 
@@ -357,7 +379,12 @@ taller bar on the stack has its rectangle's right boundary finalized.
 - Forgetting the sentinel pass (`i <= n`), silently dropping the last rectangle(s).
 - Computing `width` incorrectly when the stack becomes empty mid-pop (use `i` directly, not `i - (-1) - 1`… handle the empty case explicitly).
 
-**Example problems:** Largest Rectangle in Histogram, Maximal Rectangle (2D, run this per row).
+**Example problems:**
+- [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/)
+- [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/) (2D, run this per row)
+- [Count Submatrices With All Ones](https://leetcode.com/problems/count-submatrices-with-all-ones/)
+- [Largest Submatrix With Rearrangements](https://leetcode.com/problems/largest-submatrix-with-rearrangements/)
+- [Number of Visible People in a Queue](https://leetcode.com/problems/number-of-visible-people-in-a-queue/)
 
 ---
 
@@ -398,7 +425,12 @@ stays O(n) amortized, same accounting argument as the monotonic-stack pattern ab
 - Using `<` instead of `<=` in the absorb condition — span problems are usually
   defined as "less than or equal," so ties must be absorbed too.
 
-**Example problems:** Online Stock Span, Previous Greater Element, Sum of Subarray Ranges (uses both next/previous greater and smaller).
+**Example problems:**
+- [Online Stock Span](https://leetcode.com/problems/online-stock-span/)
+- [Sum of Subarray Ranges](https://leetcode.com/problems/sum-of-subarray-ranges/) (uses both next/previous greater and smaller)
+- [Final Prices With a Special Discount in a Shop](https://leetcode.com/problems/final-prices-with-a-special-discount-in-a-shop/)
+- [Sum of Total Strength of Wizards](https://leetcode.com/problems/sum-of-total-strength-of-wizards/)
+- [Maximum Width Ramp](https://leetcode.com/problems/maximum-width-ramp/)
 
 ---
 
@@ -445,7 +477,12 @@ implicit mechanism one-for-one, which is why this pattern is the direct answer t
   inorder's shape and expect it to work for the other two without adjustment.
 - Forgetting `curr = curr.right` after popping — silently skips entire right subtrees.
 
-**Example problems:** Binary Tree Preorder/Inorder/Postorder Traversal (Iterative), Iterative DFS on a general graph, Flatten Binary Tree to Linked List.
+**Example problems:**
+- [Binary Tree Preorder Traversal](https://leetcode.com/problems/binary-tree-preorder-traversal/) (iterative)
+- [Binary Tree Inorder Traversal](https://leetcode.com/problems/binary-tree-inorder-traversal/) (iterative)
+- [Binary Tree Postorder Traversal](https://leetcode.com/problems/binary-tree-postorder-traversal/) (iterative)
+- [Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list/)
+- [Clone Graph](https://leetcode.com/problems/clone-graph/) (iterative DFS on a general graph)
 
 ---
 
@@ -501,7 +538,12 @@ occasionally do O(n) work.
 - Moving elements from `inStack` to `outStack` on every call instead of only "if
   needed" — breaks the amortized O(1) guarantee and can reorder elements.
 
-**Example problems:** Implement Queue using Stacks, Implement Stack using Queues (the mirror-image problem).
+**Example problems:**
+- [Implement Queue using Stacks](https://leetcode.com/problems/implement-queue-using-stacks/)
+- [Implement Stack using Queues](https://leetcode.com/problems/implement-stack-using-queues/) (the mirror-image problem)
+- [Design Front Middle Back Queue](https://leetcode.com/problems/design-front-middle-back-queue/)
+- [Design Circular Deque](https://leetcode.com/problems/design-circular-deque/)
+- [Design a Stack With Increment Operation](https://leetcode.com/problems/design-a-stack-with-increment-operation/)
 
 ---
 
@@ -554,7 +596,12 @@ since there's no automatic "unwind" the way a return statement gives you in recu
 - Pushing a *reference* to a mutable state and then continuing to mutate it in the loop
   — every pushed "snapshot" ends up pointing at the same final mutated object.
 
-**Example problems:** N-Queens (iterative), Iterative Subsets/Permutations generation, Iterative Sudoku Solver.
+**Example problems:** (classic backtracking problems below — practice converting each from recursive to iterative-with-explicit-stack)
+- [N-Queens](https://leetcode.com/problems/n-queens/)
+- [Sudoku Solver](https://leetcode.com/problems/sudoku-solver/)
+- [Combinations](https://leetcode.com/problems/combinations/)
+- [Permutations](https://leetcode.com/problems/permutations/)
+- [Subsets](https://leetcode.com/problems/subsets/)
 
 ---
 
@@ -606,7 +653,12 @@ exactly the two walls needed to compute one horizontal layer of trapped water at
   interviewers may ask you to compare trade-offs (stack: intuitive but O(n) space vs.
   two-pointer: O(1) space, less obvious why it works).
 
-**Example problems:** Trapping Rain Water, Trapping Rain Water II (2D variant, needs a heap instead).
+**Example problems:**
+- [Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water/)
+- [Trapping Rain Water II](https://leetcode.com/problems/trapping-rain-water-ii/) (2D variant, needs a heap instead)
+- [Container With Most Water](https://leetcode.com/problems/container-with-most-water/)
+- [Pour Water](https://leetcode.com/problems/pour-water/)
+- [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) (same monotonic-stack-of-indices mechanic)
 
 ---
 
@@ -655,7 +707,12 @@ window). Only a `Deque`, not a plain stack, can do both in O(1).
 - Checking window expiry with `<=` vs `<` incorrectly — the correct check is
   `deque.peekFirst() <= i - k` (index has fully left the window).
 
-**Example problems:** Sliding Window Maximum, Shortest Subarray with Sum at Least K (monotonic deque on prefix sums).
+**Example problems:**
+- [Sliding Window Maximum](https://leetcode.com/problems/sliding-window-maximum/)
+- [Shortest Subarray with Sum at Least K](https://leetcode.com/problems/shortest-subarray-with-sum-at-least-k/) (monotonic deque on prefix sums)
+- [Jump Game VI](https://leetcode.com/problems/jump-game-vi/)
+- [Constrained Subsequence Sum](https://leetcode.com/problems/constrained-subsequence-sum/)
+- [Max Value of Equation](https://leetcode.com/problems/max-value-of-equation/)
 
 ---
 
@@ -709,7 +766,13 @@ back into the *parent* level's partial string — a second stack (`stringStack`)
   the parent's partial progress the moment you enter a nested bracket.
 - Forgetting to reset `count` to `0` after consuming it at a `[`.
 
-**Example problems:** Decode String, Nested List Weight Sum, Flatten Nested List Iterator, Basic Calculator III (combines this with pattern #4).
+**Example problems:**
+- [Decode String](https://leetcode.com/problems/decode-string/)
+- [Nested List Weight Sum](https://leetcode.com/problems/nested-list-weight-sum/)
+- [Nested List Weight Sum II](https://leetcode.com/problems/nested-list-weight-sum-ii/)
+- [Flatten Nested List Iterator](https://leetcode.com/problems/flatten-nested-list-iterator/)
+- [Mini Parser](https://leetcode.com/problems/mini-parser/)
+- [Basic Calculator III](https://leetcode.com/problems/basic-calculator-iii/) (combines this with pattern #4)
 
 ---
 
@@ -759,7 +822,12 @@ statement never says the word "stack."
   relative to how you'll want to print it — needs an explicit reversal step (or use an
   `ArrayList` instead of a second stack if you don't need stack semantics for the output).
 
-**Example problems:** Simplify Path, Basic Calculator (undo-style sign tracking), Backspace String Compare.
+**Example problems:**
+- [Simplify Path](https://leetcode.com/problems/simplify-path/)
+- [Backspace String Compare](https://leetcode.com/problems/backspace-string-compare/)
+- [Remove All Adjacent Duplicates In String](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
+- [Remove All Adjacent Duplicates in String II](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/)
+- [Build an Array With Stack Operations](https://leetcode.com/problems/build-an-array-with-stack-operations/)
 
 ---
 
