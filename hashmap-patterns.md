@@ -131,6 +131,13 @@ int mode = freq.entrySet().stream()
 - For ASCII, using `Map` when `int[26]` would do - slow and noisy.
 - After mutating freq down to 0, `containsKey` STILL returns true. Either `remove(k)` when count hits 0, or check `freq.getOrDefault(k, 0) > 0`.
 
+**Example problems:**
+- [First Unique Character in a String](https://leetcode.com/problems/first-unique-character-in-a-string/)
+- [Valid Anagram](https://leetcode.com/problems/valid-anagram/)
+- [Majority Element](https://leetcode.com/problems/majority-element/)
+- [Sort Array by Increasing Frequency](https://leetcode.com/problems/sort-array-by-increasing-frequency/)
+- [Find All Duplicates in an Array](https://leetcode.com/problems/find-all-duplicates-in-an-array/)
+
 ---
 
 ## 2. Two-Sum Family (complement lookup)
@@ -194,6 +201,13 @@ class TwoSum {
 - Putting BEFORE checking - same element matches itself when `target = 2 * x`.
 - Forgetting to handle duplicates correctly when counting pairs - `count BEFORE increment` is the safe pattern.
 - For 4-Sum II, NOT splitting into halves -> O(n^4) brute force.
+
+**Example problems:**
+- [Two Sum](https://leetcode.com/problems/two-sum/)
+- [4Sum II](https://leetcode.com/problems/4sum-ii/)
+- [K-diff Pairs in an Array](https://leetcode.com/problems/k-diff-pairs-in-an-array/)
+- [Pairs of Songs With Total Durations Divisible by 60](https://leetcode.com/problems/pairs-of-songs-with-total-durations-divisible-by-60/)
+- [Two Sum III - Data Structure Design](https://leetcode.com/problems/two-sum-iii-data-structure-design/)
 
 ---
 
@@ -261,6 +275,13 @@ return false;
 - Java's `%` on negatives returns negative - use `((x % k) + k) % k` to normalize.
 - Mixing `prefix -> count` (for COUNTING subarrays) with `prefix -> firstIndex` (for LONGEST). They're different patterns.
 
+**Example problems:**
+- [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/)
+- [Subarray Sums Divisible by K](https://leetcode.com/problems/subarray-sums-divisible-by-k/)
+- [Continuous Subarray Sum](https://leetcode.com/problems/continuous-subarray-sum/)
+- [Binary Subarrays With Sum](https://leetcode.com/problems/binary-subarrays-with-sum/)
+- [Path Sum III](https://leetcode.com/problems/path-sum-iii/)
+
 ---
 
 ## 4. Prefix State + First-Occurrence Map (longest subarray with property)
@@ -312,6 +333,13 @@ return best;
 - Using `prefix -> count` (good for COUNTING) instead of `prefix -> firstIndex` (right for LONGEST).
 - Forgetting `firstSeen.put(0, -1)` - subarrays starting at index 0 not considered.
 
+**Example problems:**
+- [Contiguous Array](https://leetcode.com/problems/contiguous-array/)
+- [Maximum Size Subarray Sum Equals k](https://leetcode.com/problems/maximum-size-subarray-sum-equals-k/)
+- [Longest Well-Performing Interval](https://leetcode.com/problems/longest-well-performing-interval/)
+- [Find the Longest Substring Containing Vowels in Even Counts](https://leetcode.com/problems/find-the-longest-substring-containing-vowels-in-even-counts/)
+- [Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/) (cross-ref Pattern 3 — contrast count vs longest)
+
 ---
 
 ## 5. Grouping / Bucketing
@@ -355,6 +383,13 @@ for (String w : words) {
 - Using bare string concatenation (`sb.append(f)`) without a delimiter - `freq=[1,12,...]` and `freq=[11,2,...]` collide on signature `112...`.
 - Wasting allocations: use `int[]` signature when possible (encoded as String with delimiter).
 - Returning `groups.values()` directly - return type is `Collection<List<String>>`; wrap as `new ArrayList<>(groups.values())` if `List<List<String>>` required.
+
+**Example problems:**
+- [Group Anagrams](https://leetcode.com/problems/group-anagrams/)
+- [Group Shifted Strings](https://leetcode.com/problems/group-shifted-strings/)
+- [Find Duplicate File in System](https://leetcode.com/problems/find-duplicate-file-in-system/)
+- [Custom Sort String](https://leetcode.com/problems/custom-sort-string/)
+- [Group the People Given the Group Size They Belong To](https://leetcode.com/problems/group-the-people-given-the-group-size-they-belong-to/)
 
 ---
 
@@ -408,6 +443,13 @@ return true;
 **Common bugs:**
 - Using ONE map only - can map two different chars to the same target. The reverse map catches this.
 - Using `==` on Character/String - **always** `.equals()` for content.
+
+**Example problems:**
+- [Isomorphic Strings](https://leetcode.com/problems/isomorphic-strings/)
+- [Word Pattern](https://leetcode.com/problems/word-pattern/)
+- [Verifying an Alien Dictionary](https://leetcode.com/problems/verifying-an-alien-dictionary/)
+- [Find and Replace Pattern](https://leetcode.com/problems/find-and-replace-pattern/)
+- [Word Pattern II](https://leetcode.com/problems/word-pattern-ii/)
 
 ---
 
@@ -469,6 +511,13 @@ return bestLen == Integer.MAX_VALUE ? "" : s.substring(bestL, bestL + bestLen);
 - Not removing keys when count hits 0 - `freq.size()` becomes wrong, breaking "at most K distinct".
 - For min-window, returning `r - l + 1` from the WRONG `l` (after final shrink past optimum). Capture `bestL`, `bestLen` at each improvement.
 
+**Example problems:**
+- [Longest Substring with At Most K Distinct Characters](https://leetcode.com/problems/longest-substring-with-at-most-k-distinct-characters/)
+- [Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/)
+- [Permutation in String](https://leetcode.com/problems/permutation-in-string/)
+- [Find All Anagrams in a String](https://leetcode.com/problems/find-all-anagrams-in-a-string/)
+- [Subarrays with K Different Integers](https://leetcode.com/problems/subarrays-with-k-different-integers/)
+
 ---
 
 ## 8. Map + Heap (Top K Frequent)
@@ -526,6 +575,13 @@ return result;
 **Common bugs:**
 - For top K, using a MAX-heap of size N (sorts everything) - O(n log n) instead of O(n log k).
 - For tied frequencies, comparator direction matters - in a min-heap, alphabetically LATER words should be at the top (so they get popped first). Easy to get backwards.
+
+**Example problems:**
+- [Top K Frequent Elements](https://leetcode.com/problems/top-k-frequent-elements/)
+- [Top K Frequent Words](https://leetcode.com/problems/top-k-frequent-words/)
+- [Sort Characters By Frequency](https://leetcode.com/problems/sort-characters-by-frequency/)
+- [K Closest Points to Origin](https://leetcode.com/problems/k-closest-points-to-origin/)
+- [Kth Largest Element in an Array](https://leetcode.com/problems/kth-largest-element-in-an-array/)
 
 ---
 
@@ -614,6 +670,13 @@ class LRUCache extends LinkedHashMap<Integer, Integer> {
 - For LinkedHashMap shortcut: forgetting `accessOrder = true` - falls back to insertion order.
 - For LFU: forgetting to update `minFreq` after eviction or after incrementing the last key in the `minFreq` bucket.
 
+**Example problems:**
+- [LRU Cache](https://leetcode.com/problems/lru-cache/)
+- [LFU Cache](https://leetcode.com/problems/lfu-cache/)
+- [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/)
+- [Insert Delete GetRandom O(1) - Duplicates Allowed](https://leetcode.com/problems/insert-delete-getrandom-o1-duplicates-allowed/)
+- [All O'one Data Structure](https://leetcode.com/problems/all-oone-data-structure/)
+
 ---
 
 ## 10. Visited / Dedup Set
@@ -666,6 +729,13 @@ return false;
 - Adding before checking - lose the duplicate signal. Use `Set.add(x)` (returns boolean).
 - For `Set<int[]>` - arrays use reference equality, not content. Wrap in `String.valueOf` or use `Arrays.asList`.
 
+**Example problems:**
+- [Contains Duplicate](https://leetcode.com/problems/contains-duplicate/)
+- [Happy Number](https://leetcode.com/problems/happy-number/)
+- [Linked List Cycle](https://leetcode.com/problems/linked-list-cycle/)
+- [Intersection of Two Arrays](https://leetcode.com/problems/intersection-of-two-arrays/)
+- [Longest Consecutive Sequence](https://leetcode.com/problems/longest-consecutive-sequence/)
+
 ---
 
 ## 11. Multi-Field / Encoded Keys
@@ -713,6 +783,13 @@ long key = ((long) i << 32) | (j & 0xFFFFFFFFL);
 **Common bugs:**
 - Using `int[]` as map key - arrays compare by reference, not content. Either encode or use `Arrays.toString(arr)` (slow) or `IntBuffer.wrap(arr)`.
 - For multi-int encoding, integer overflow when `i * BIG + j` overflows. Use `long`.
+
+**Example problems:**
+- [Number of Islands II](https://leetcode.com/problems/number-of-islands-ii/)
+- [Word Ladder](https://leetcode.com/problems/word-ladder/)
+- [Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/)
+- [Sudoku Solver](https://leetcode.com/problems/sudoku-solver/) (encoded (row, col, num) visited state)
+- [Max Points on a Line](https://leetcode.com/problems/max-points-on-a-line/) (encoded slope key)
 
 ---
 
@@ -765,6 +842,13 @@ tm.descendingMap();                       // reverse view
 - TreeMap doesn't allow nulls (in default Comparator). Custom Comparator can permit if explicit.
 - TreeMap equality is by `compareTo() == 0`, NOT `.equals()` - same trap as TreeSet. Ensure your Comparator distinguishes everything that should be distinct.
 
+**Example problems:**
+- [Time Based Key-Value Store](https://leetcode.com/problems/time-based-key-value-store/)
+- [My Calendar I](https://leetcode.com/problems/my-calendar-i/)
+- [My Calendar II](https://leetcode.com/problems/my-calendar-ii/)
+- [My Calendar III](https://leetcode.com/problems/my-calendar-iii/)
+- [Snapshot Array](https://leetcode.com/problems/snapshot-array/)
+
 ---
 
 ## 13 (design). Frequency / Time-Backed Designs
@@ -815,6 +899,13 @@ class HitCounter {
 **Common bugs:**
 - For rate limiter, using `>` instead of `>=` for the time window.
 - For hit counter, NOT bucketing same-timestamp hits - O(n) per hit instead of O(1).
+
+**Example problems:**
+- [Logger Rate Limiter](https://leetcode.com/problems/logger-rate-limiter/)
+- [Design Hit Counter](https://leetcode.com/problems/design-hit-counter/)
+- [Design Twitter](https://leetcode.com/problems/design-twitter/)
+- [Insert Delete GetRandom O(1)](https://leetcode.com/problems/insert-delete-getrandom-o1/) (cross-ref Pattern 9)
+- [Design Underground System](https://leetcode.com/problems/design-underground-system/)
 
 ---
 
