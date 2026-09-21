@@ -12,6 +12,7 @@ Structured, pattern-first notes for SDE-2 interview prep — organized by *patte
 
 - [Intervals](./intervals.md)
 - [Trees](./trees.md)
+- [Stack](./stack.md)
 - [Graphs](./graphs.md) — in progress
 - [Dynamic Programming](./dp.md) — in progress
 
@@ -19,6 +20,7 @@ Structured, pattern-first notes for SDE-2 interview prep — organized by *patte
 
 - [Intervals — 1 pager](./cheatsheets/intervals-1page.md)
 - [Trees — 1 pager](./cheatsheets/trees-1page.md)
+- [Stack — 1 pager](./cheatsheets/stack-1page.md)
 - [Graphs — 1 pager](./cheatsheets/graphs-1page.md) — in progress
 
 ## Revision schedule
