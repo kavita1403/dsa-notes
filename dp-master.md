@@ -140,6 +140,13 @@ Trick: handle the cycle by trying both "skip first" and "skip last".
 - Not handling `n = 0` or `n = 1` base cases.
 - For House Robber II: forgetting that single-element arrays don't fit the "skip first or last" logic.
 
+**Example problems:**
+- [Climbing Stairs](https://leetcode.com/problems/climbing-stairs/)
+- [House Robber](https://leetcode.com/problems/house-robber/)
+- [House Robber II](https://leetcode.com/problems/house-robber-ii/)
+- [Min Cost Climbing Stairs](https://leetcode.com/problems/min-cost-climbing-stairs/)
+- [Decode Ways](https://leetcode.com/problems/decode-ways/)
+
 ---
 
 ## 2. 0/1 Knapsack
@@ -189,6 +196,13 @@ return dp[target];
 - Iterating capacity FORWARD with 1D dp - turns 0/1 into unbounded.
 - For partition: forgetting to check `totalSum % 2 == 0` first.
 - Conflating "exact target" vs "max value not exceeding capacity" - different transitions.
+
+**Example problems:**
+- [Partition Equal Subset Sum](https://leetcode.com/problems/partition-equal-subset-sum/)
+- [Target Sum](https://leetcode.com/problems/target-sum/)
+- [Last Stone Weight II](https://leetcode.com/problems/last-stone-weight-ii/)
+- [Ones and Zeroes](https://leetcode.com/problems/ones-and-zeroes/)
+- [Profitable Schemes](https://leetcode.com/problems/profitable-schemes/)
 
 ---
 
@@ -249,6 +263,13 @@ return dp[target];
 - Forgetting to initialize dp[0] = 0 for min, or dp[0] = 1 for count.
 - Sentinel mistake: using `Integer.MAX_VALUE` directly causes overflow when you add 1. Use `amount + 1` as "impossible" sentinel.
 
+**Example problems:**
+- [Coin Change](https://leetcode.com/problems/coin-change/)
+- [Coin Change II](https://leetcode.com/problems/coin-change-ii/)
+- [Perfect Squares](https://leetcode.com/problems/perfect-squares/)
+- [Minimum Cost For Tickets](https://leetcode.com/problems/minimum-cost-for-tickets/)
+- [Combination Sum IV](https://leetcode.com/problems/combination-sum-iv/)
+
 ---
 
 ## 4. LIS - Longest Increasing Subsequence
@@ -304,6 +325,13 @@ return size;
 - Returning `dp[n - 1]` instead of `max(dp)` - LIS may end at any index, not necessarily last.
 - For O(n log n): using wrong comparison in binary search (`<` vs `<=`) - changes strict vs non-strict.
 - For Russian Doll: not sorting by height DESC for tied widths - allows pairs of same width to chain incorrectly.
+
+**Example problems:**
+- [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/)
+- [Russian Doll Envelopes](https://leetcode.com/problems/russian-doll-envelopes/)
+- [Number of Longest Increasing Subsequence](https://leetcode.com/problems/number-of-longest-increasing-subsequence/)
+- [Maximum Length of Pair Chain](https://leetcode.com/problems/maximum-length-of-pair-chain/)
+- [Longest String Chain](https://leetcode.com/problems/longest-string-chain/)
 
 ---
 
@@ -370,6 +398,13 @@ return sb.reverse().toString();
 - Off-by-one: dp is `[m+1][n+1]`, but `charAt(i-1)` indexes the string. Mixing 1-based dp with 0-based string is the #1 LCS bug.
 - For 1D rolling: forgetting that `prev[j-1]` (top-left in 2D) is overwritten - need a temp variable if using a single 1D array.
 - For reconstruct: walking backwards in wrong order (need to reverse the StringBuilder).
+
+**Example problems:**
+- [Longest Common Subsequence](https://leetcode.com/problems/longest-common-subsequence/)
+- [Delete Operation for Two Strings](https://leetcode.com/problems/delete-operation-for-two-strings/)
+- [Shortest Common Supersequence](https://leetcode.com/problems/shortest-common-supersequence/)
+- [Minimum ASCII Delete Sum for Two Strings](https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/)
+- [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/) (LCS of string and its reverse)
 
 ---
 
@@ -451,6 +486,13 @@ return dp[m][n];
 - For regex `*`: pattern char `*` requires looking at `p[j-2]`, not `p[j-1]`. Off-by-one is common.
 - For distinct subsequences: dp[i][0] = 1 (not 0) - one way to match empty target.
 
+**Example problems:**
+- [Edit Distance](https://leetcode.com/problems/edit-distance/)
+- [Regular Expression Matching](https://leetcode.com/problems/regular-expression-matching/)
+- [Wildcard Matching](https://leetcode.com/problems/wildcard-matching/)
+- [Distinct Subsequences](https://leetcode.com/problems/distinct-subsequences/)
+- [Interleaving String](https://leetcode.com/problems/interleaving-string/)
+
 ---
 
 ## 7. String DP (Word Break / Decode Ways)
@@ -501,6 +543,13 @@ return dp[n];
 - For Decode Ways: forgetting "0" can't decode alone (only as part of 10 or 20).
 - For Word Break: using `substring` in a tight loop - O(n) cost; consider Trie for big dictionaries.
 - For Word Break II: pure backtracking without memo -> exponential blow-up. Always DP for feasibility first.
+
+**Example problems:**
+- [Word Break](https://leetcode.com/problems/word-break/)
+- [Word Break II](https://leetcode.com/problems/word-break-ii/)
+- [Decode Ways](https://leetcode.com/problems/decode-ways/)
+- [Concatenated Words](https://leetcode.com/problems/concatenated-words/)
+- [Decode Ways II](https://leetcode.com/problems/decode-ways-ii/)
 
 ---
 
@@ -560,6 +609,13 @@ return cuts[n - 1];
 **Common bugs:**
 - Iterating in wrong order - `dp[i][j]` depends on `dp[i+1][...]` or `dp[...][j-1]`, so iterate `i` DECREASING.
 - For palindrome check: `j - i < 2` is the special case (length 1 or 2 only need char match).
+
+**Example problems:**
+- [Longest Palindromic Subsequence](https://leetcode.com/problems/longest-palindromic-subsequence/)
+- [Palindrome Partitioning II](https://leetcode.com/problems/palindrome-partitioning-ii/)
+- [Palindromic Substrings](https://leetcode.com/problems/palindromic-substrings/)
+- [Longest Palindromic Substring](https://leetcode.com/problems/longest-palindromic-substring/)
+- [Palindrome Partitioning](https://leetcode.com/problems/palindrome-partitioning/)
 
 ---
 
@@ -627,6 +683,13 @@ return dp[k][n - 1];
 **Common bugs:**
 - For Stock IV, naive O(K * N^2) TLEs - the `maxDiff` running optimization is required.
 - For state machine: confusing prev/cur values - always capture prevs first, then update.
+
+**Example problems:**
+- [Best Time to Buy and Sell Stock](https://leetcode.com/problems/best-time-to-buy-and-sell-stock/)
+- [Best Time to Buy and Sell Stock II](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+- [Best Time to Buy and Sell Stock III](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/)
+- [Best Time to Buy and Sell Stock IV](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/)
+- [Best Time to Buy and Sell Stock with Cooldown](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-with-cooldown/)
 
 ---
 
@@ -702,6 +765,13 @@ int dfs(int[][] m, int i, int j) {
 - For Dungeon Game: doing DP forward instead of backward gives wrong answer (the health constraint changes the optimality).
 - For longest increasing path: forgetting memoization makes it exponential.
 
+**Example problems:**
+- [Unique Paths](https://leetcode.com/problems/unique-paths/)
+- [Unique Paths II](https://leetcode.com/problems/unique-paths-ii/)
+- [Minimum Path Sum](https://leetcode.com/problems/minimum-path-sum/)
+- [Dungeon Game](https://leetcode.com/problems/dungeon-game/)
+- [Longest Increasing Path in a Matrix](https://leetcode.com/problems/longest-increasing-path-in-a-matrix/)
+
 ---
 
 ## 11. Region DP (Histogram / Maximal Square)
@@ -754,6 +824,13 @@ Use the monotonic-stack histogram algorithm (covered in arrays.md / pattern 9 th
 **Common bugs:**
 - For Maximal Square: returning the side length instead of `side * side` (the AREA).
 - For Maximal Rectangle: incorrect height reset when matrix[i][j] == 0.
+
+**Example problems:**
+- [Maximal Square](https://leetcode.com/problems/maximal-square/)
+- [Maximal Rectangle](https://leetcode.com/problems/maximal-rectangle/)
+- [Count Square Submatrices with All Ones](https://leetcode.com/problems/count-square-submatrices-with-all-ones/)
+- [Largest Plus Sign](https://leetcode.com/problems/largest-plus-sign/)
+- [Largest Rectangle in Histogram](https://leetcode.com/problems/largest-rectangle-in-histogram/) (cross-ref, stack-based sibling)
 
 ---
 
@@ -813,6 +890,13 @@ return dp[0][n - 1];
 - For Burst Balloons: thinking "first to burst" instead of "last to burst" - wrong recurrence.
 - Forgetting boundary balloons (virtual 1s) in Burst Balloons.
 
+**Example problems:**
+- [Burst Balloons](https://leetcode.com/problems/burst-balloons/)
+- [Minimum Cost to Merge Stones](https://leetcode.com/problems/minimum-cost-to-merge-stones/)
+- [Remove Boxes](https://leetcode.com/problems/remove-boxes/)
+- [Minimum Score Triangulation of Polygon](https://leetcode.com/problems/minimum-score-triangulation-of-polygon/)
+- [Strange Printer](https://leetcode.com/problems/strange-printer/)
+
 ---
 
 ## 13. Tree DP
@@ -869,6 +953,13 @@ int dfs(TreeNode node) {
 - Returning the GLOBAL best instead of the upward-extendable value - parent can't continue the path.
 - Not handling null nodes (return 0 or a sentinel).
 - For diameter: using node count vs edge count - clarify upfront.
+
+**Example problems:**
+- [House Robber III](https://leetcode.com/problems/house-robber-iii/)
+- [Binary Tree Maximum Path Sum](https://leetcode.com/problems/binary-tree-maximum-path-sum/)
+- [Diameter of Binary Tree](https://leetcode.com/problems/diameter-of-binary-tree/)
+- [Longest Univalue Path](https://leetcode.com/problems/longest-univalue-path/)
+- [Binary Tree Cameras](https://leetcode.com/problems/binary-tree-cameras/)
 
 ---
 
@@ -952,6 +1043,13 @@ Integer.bitCount(mask) // count set bits
 - For TSP: forgetting that the path must return to start - add `adj[u][0]` in final answer.
 - `n` too large - bitmask DP is exponential in `n` (2^n states).
 
+**Example problems:**
+- [Partition to K Equal Sum Subsets](https://leetcode.com/problems/partition-to-k-equal-sum-subsets/)
+- [Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/)
+- [Smallest Sufficient Team](https://leetcode.com/problems/smallest-sufficient-team/)
+- [Maximum Students Taking Exam](https://leetcode.com/problems/maximum-students-taking-exam/)
+- [Minimum Number of Work Sessions to Finish the Tasks](https://leetcode.com/problems/minimum-number-of-work-sessions-to-finish-the-tasks/)
+
 ---
 
 ## 15. Digit DP
@@ -982,6 +1080,13 @@ private int dp(int pos, int lastDigit, int tight, String s) {
 ```
 
 **Pattern:** `dp[pos][state][tight]` - position in number, extra state (last digit / sum / count), whether we're still tight to N's digits.
+
+**Example problems:**
+- [Numbers With Repeated Digits](https://leetcode.com/problems/numbers-with-repeated-digits/)
+- [Count Numbers with Unique Digits](https://leetcode.com/problems/count-numbers-with-unique-digits/)
+- [Non-negative Integers without Consecutive Ones](https://leetcode.com/problems/non-negative-integers-without-consecutive-ones/)
+- [Number of Digit One](https://leetcode.com/problems/number-of-digit-one/)
+- [Count of Integers](https://leetcode.com/problems/count-of-integers/)
 
 ---
 
