@@ -27,6 +27,8 @@ void bfs(int start, List<List<Integer>> adj) {
 }
 ```
 
+Each of the 16 patterns below now ends with a **Practice problems** list (5 each, 80 total) — a mix of direct LeetCode links and a few *(self-drill)* prompts where LeetCode coverage is thin (SCC, articulation points). Work top to bottom per the suggested learning order at the end of this file, or jump straight to a pattern's practice list once its template feels solid.
+
 ---
 
 ## Decision Fork (ask yourself this before writing any code)
@@ -136,6 +138,13 @@ public int bfsShortestPath(int start, int target, List<List<Integer>> adj) {
 - Forgetting the level-snapshot (`size = queue.size()`) and instead checking `queue.size()` inside the loop where it's mutating.
 - Not handling start == target as a 0-step edge case.
 
+**Practice problems:**
+1. [Word Ladder](https://leetcode.com/problems/word-ladder/) — Hard
+2. [Open the Lock](https://leetcode.com/problems/open-the-lock/) — Medium
+3. [Minimum Knight Moves](https://leetcode.com/problems/minimum-knight-moves/) — Medium
+4. [Shortest Path in Binary Matrix](https://leetcode.com/problems/shortest-path-in-binary-matrix/) — Medium
+5. [Snakes and Ladders](https://leetcode.com/problems/snakes-and-ladders/) — Medium
+
 ---
 
 ## 2. DFS Traversal (Exploration, Components)
@@ -198,6 +207,13 @@ void dfsIterative(char[][] grid, int si, int sj) {
 - Forgetting to mark visited BEFORE recursing (or right when pushed to stack) → revisits, infinite loop in cyclic graphs.
 - Modifying grid in-place when you need original values later — clone if so.
 
+**Practice problems:**
+1. [Number of Islands](https://leetcode.com/problems/number-of-islands/) — Medium
+2. [Max Area of Island](https://leetcode.com/problems/max-area-of-island/) — Medium
+3. [Flood Fill](https://leetcode.com/problems/flood-fill/) — Easy
+4. [Surrounded Regions](https://leetcode.com/problems/surrounded-regions/) — Medium
+5. [All Paths From Source to Target](https://leetcode.com/problems/all-paths-from-source-to-target/) — Medium
+
 ---
 
 ## 3. Multi-Source BFS
@@ -251,6 +267,13 @@ public int orangesRotting(int[][] grid) {
 **Common bugs:**
 - Running separate BFS per source instead of combining into one queue — gives wrong (non-minimal) distances when sources overlap in coverage.
 - Forgetting edge case: 0 fresh oranges initially → answer is 0, not -1.
+
+**Practice problems:**
+1. [Rotting Oranges](https://leetcode.com/problems/rotting-oranges/) — Medium
+2. [Walls and Gates](https://leetcode.com/problems/walls-and-gates/) — Medium *(Premium)*
+3. [01 Matrix](https://leetcode.com/problems/01-matrix/) — Medium
+4. [Map of Highest Peak](https://leetcode.com/problems/map-of-highest-peak/) — Medium
+5. [As Far from Land as Possible](https://leetcode.com/problems/as-far-from-land-as-possible/) — Medium
 
 ---
 
@@ -321,6 +344,13 @@ void dfs(int node, List<List<Integer>> adj) {
 - For Kahn's: forgetting to check `idx == numCourses` at the end — silently returning a partial/wrong order when a cycle exists.
 - For DFS-based: forgetting to reverse the post-order list at the end.
 
+**Practice problems:**
+1. [Course Schedule II](https://leetcode.com/problems/course-schedule-ii/) — Medium
+2. [Alien Dictionary](https://leetcode.com/problems/alien-dictionary/) — Hard *(Premium)*
+3. [Minimum Height Trees](https://leetcode.com/problems/minimum-height-trees/) — Medium
+4. [Sequence Reconstruction](https://leetcode.com/problems/sequence-reconstruction/) — Medium *(Premium)*
+5. [Parallel Courses](https://leetcode.com/problems/parallel-courses/) — Medium *(Premium)*
+
 ---
 
 ## 5. Cycle Detection — Directed Graph
@@ -362,6 +392,13 @@ boolean hasCycle(int node, List<List<Integer>> adj, int[] state) {
 **Common bugs:**
 - Using only boolean `visited[]` (2-state) instead of 3-state — gives false positives on diamond-shaped DAGs (`A->B->D`, `A->C->D` is NOT a cycle, but 2-state marking can incorrectly flag it).
 - Forgetting to reset/check `state[node] = 2` after the node's subtree is fully explored.
+
+**Practice problems:**
+1. [Course Schedule](https://leetcode.com/problems/course-schedule/) — Medium
+2. [Find Eventual Safe States](https://leetcode.com/problems/find-eventual-safe-states/) — Medium
+3. [Redundant Connection II](https://leetcode.com/problems/redundant-connection-ii/) — Hard
+4. [Longest Cycle in a Graph](https://leetcode.com/problems/longest-cycle-in-a-graph/) — Hard
+5. [Minimum Number of Vertices to Reach All Nodes](https://leetcode.com/problems/minimum-number-of-vertices-to-reach-all-nodes/) — Medium
 
 ---
 
@@ -413,6 +450,13 @@ boolean hasCycle(int node, int parent, boolean[] visited, List<List<Integer>> ad
 **Common bugs:**
 - In DFS approach: forgetting to skip the parent edge — incorrectly treats every edge as a "back edge" since undirected edges appear in both directions in adjacency lists.
 - In Union-Find: forgetting path compression — degrades to O(n) per find, O(n^2) overall on large inputs.
+
+**Practice problems:**
+1. [Redundant Connection](https://leetcode.com/problems/redundant-connection/) — Medium
+2. [Graph Valid Tree](https://leetcode.com/problems/graph-valid-tree/) — Medium *(Premium)*
+3. [Redundant Connection II](https://leetcode.com/problems/redundant-connection-ii/) — Hard — directed counterpart, good compare/contrast with pattern #5
+4. [Number of Operations to Make Network Connected](https://leetcode.com/problems/number-of-operations-to-make-network-connected/) — Medium
+5. [Number of Connected Components in an Undirected Graph](https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/) — Medium *(Premium)*
 
 ---
 
@@ -478,6 +522,13 @@ public int findCircleNum(int[][] isConnected) {
 - Forgetting union by rank/size — without it, trees can degenerate into long chains.
 - Off-by-one when nodes are 1-indexed vs the array being 0-indexed.
 
+**Practice problems:**
+1. [Number of Provinces](https://leetcode.com/problems/number-of-provinces/) — Medium
+2. [Accounts Merge](https://leetcode.com/problems/accounts-merge/) — Medium
+3. [Smallest String With Swaps](https://leetcode.com/problems/smallest-string-with-swaps/) — Medium
+4. [Satisfiability of Equality Equations](https://leetcode.com/problems/satisfiability-of-equality-equations/) — Medium
+5. [Most Stones Removed with Same Row or Column](https://leetcode.com/problems/most-stones-removed-with-same-row-or-column/) — Medium
+
 ---
 
 ## 8. Dijkstra's Algorithm
@@ -536,6 +587,13 @@ public int networkDelayTime(int[][] times, int n, int k) {
 - Forgetting the stale-entry check — without it, correctness still holds but you do wasted work; with very large graphs this can TLE.
 - 0-indexed vs 1-indexed node confusion (very common in this specific problem family).
 
+**Practice problems:**
+1. [Network Delay Time](https://leetcode.com/problems/network-delay-time/) — Medium
+2. [Path With Minimum Effort](https://leetcode.com/problems/path-with-minimum-effort/) — Medium
+3. [Path With Maximum Probability](https://leetcode.com/problems/path-with-maximum-probability/) — Medium
+4. [Swim in Rising Water](https://leetcode.com/problems/swim-in-rising-water/) — Hard
+5. [Number of Ways to Arrive at Destination](https://leetcode.com/problems/number-of-ways-to-arrive-at-destination/) — Medium
+
 ---
 
 ## 9. Bellman-Ford
@@ -591,6 +649,13 @@ for (int[] edge : edges) {
 - Not running the extra (V-th) pass when negative-cycle detection is required.
 - Confusing "K stops" with "K edges" — K stops means K+1 edges in the path; off-by-one is extremely common here.
 
+**Practice problems:**
+1. [Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/) — Medium
+2. [Minimum Cost to Reach Destination in Time](https://leetcode.com/problems/minimum-cost-to-reach-destination-in-time/) — Hard
+3. [Network Delay Time](https://leetcode.com/problems/network-delay-time/) — Medium — re-solve with Bellman-Ford instead of Dijkstra, for contrast
+4. *(self-drill)* Detect a negative-weight cycle in a directed graph — extend the generic template above with the extra V-th relaxation pass.
+5. *(self-drill)* Currency arbitrage detection — model each edge weight as `-log(exchangeRate)`; a negative cycle = an arbitrage loop.
+
 ---
 
 ## 10. Floyd-Warshall (All-Pairs Shortest Path)
@@ -636,6 +701,13 @@ public int findTheCity(int n, int[][] edges, int distanceThreshold) {
 **Common bugs:**
 - Loop order MUST be `k` (outermost), then `i`, then `j` — this is non-negotiable, unlike many other nested loops.
 - Sentinel overflow: `Integer.MAX_VALUE + Integer.MAX_VALUE` overflows to negative — use `MAX_VALUE / 2` as the "infinity" sentinel instead.
+
+**Practice problems:**
+1. [Find the City With the Smallest Number of Neighbors at a Threshold Distance](https://leetcode.com/problems/find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance/) — Medium
+2. [Course Schedule IV](https://leetcode.com/problems/course-schedule-iv/) — Medium
+3. [Evaluate Division](https://leetcode.com/problems/evaluate-division/) — Medium
+4. [Cheapest Flights Within K Stops](https://leetcode.com/problems/cheapest-flights-within-k-stops/) — Medium — re-solve with the Floyd-Warshall "bounded intermediate nodes" variant, for contrast
+5. *(self-drill)* Compute a weighted graph's diameter (max shortest-path distance over all pairs) directly from the finished `dist[][]` matrix.
 
 ---
 
@@ -708,6 +780,13 @@ public int minCostConnectPoints(int[][] points) {
 - Forgetting to stop early once `n-1` edges are used in Kruskal's (not strictly required for correctness here, but wastes time on large inputs).
 - In Prim's: not checking `inMST[node]` before processing a popped entry — leads to double-counting cost.
 
+**Practice problems:**
+1. [Min Cost to Connect All Points](https://leetcode.com/problems/min-cost-to-connect-all-points/) — Medium
+2. [Connecting Cities With Minimum Cost](https://leetcode.com/problems/connecting-cities-with-minimum-cost/) — Medium *(Premium)*
+3. [Optimize Water Distribution in a Village](https://leetcode.com/problems/optimize-water-distribution-in-a-village/) — Hard *(Premium)*
+4. [Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree](https://leetcode.com/problems/find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree/) — Hard
+5. [Checking Existence of Edge Length Limited Paths](https://leetcode.com/problems/checking-existence-of-edge-length-limited-paths/) — Hard
+
 ---
 
 ## 12. Bipartite Check (2-Coloring)
@@ -751,6 +830,13 @@ public boolean isBipartite(int[][] graph) {
 **Common bugs:**
 - Forgetting to loop over ALL nodes as potential starting points — graph might be disconnected, single BFS from node 0 won't cover everything.
 - Using `0/1` for colors instead of `1/-1` makes the "opposite color" assignment clunkier (need if-else instead of negation).
+
+**Practice problems:**
+1. [Is Graph Bipartite?](https://leetcode.com/problems/is-graph-bipartite/) — Medium
+2. [Possible Bipartition](https://leetcode.com/problems/possible-bipartition/) — Medium
+3. [Flower Planting With No Adjacent](https://leetcode.com/problems/flower-planting-with-no-adjacent/) — Medium
+4. [Divide Nodes Into the Maximum Number of Groups](https://leetcode.com/problems/divide-nodes-into-the-maximum-number-of-groups/) — Hard
+5. *(self-drill)* Generalize 2-coloring to m-coloring with backtracking (the classic Graph Coloring Problem).
 
 ---
 
@@ -818,6 +904,13 @@ public int shortestPathAllKeys(String[] grid) {
 - Using `visited[row][col]` (2D boolean array) instead of `visited[row][col][stateMask]` — silently blocks valid revisits with a different state, giving wrong (too-large or -1) answers.
 - Forgetting that picking up a key should update `newKeys` only on the NEXT state, not retroactively on the current one mid-loop.
 
+**Practice problems:**
+1. [Shortest Path to Get All Keys](https://leetcode.com/problems/shortest-path-to-get-all-keys/) — Hard
+2. [Shortest Path in a Grid with Obstacles Elimination](https://leetcode.com/problems/shortest-path-in-a-grid-with-obstacles-elimination/) — Hard
+3. [Shortest Path Visiting All Nodes](https://leetcode.com/problems/shortest-path-visiting-all-nodes/) — Hard
+4. [Bus Routes](https://leetcode.com/problems/bus-routes/) — Hard
+5. [Minimum Obstacle Removal to Reach Corner](https://leetcode.com/problems/minimum-obstacle-removal-to-reach-corner/) — Hard
+
 ---
 
 ## 14. Bridges & Articulation Points (Tarjan's)
@@ -871,6 +964,13 @@ void dfs(int node, int parent, int n) {
 - Forgetting to skip the parent edge — undirected adjacency lists store edges both ways, so without this check you'd treat the edge back to your own parent as a "back edge" to a different component.
 - Confusing `disc[]` (discovery time, fixed once set) with `low[]` (can be updated as DFS explores children) — they serve different purposes.
 
+**Practice problems:**
+1. [Critical Connections in a Network](https://leetcode.com/problems/critical-connections-in-a-network/) — Hard
+2. [Minimum Number of Days to Disconnect Island](https://leetcode.com/problems/minimum-number-of-days-to-disconnect-island/) — Hard
+3. *(self-drill)* Articulation Points (GfG classic) — implement the root special-case (a DFS-tree root is an articulation point iff it has 2+ children).
+4. *(self-drill)* Bridges in a Graph (GfG classic) — re-derive the template from scratch, focusing on why `low[next] > disc[node]` must be strict.
+5. [Critical Connections in a Network](https://leetcode.com/problems/critical-connections-in-a-network/) — Hard — follow-up: extend the same DFS pass to also return articulation points, not just bridges
+
 ---
 
 ## 15. Strongly Connected Components (SCC)
@@ -918,6 +1018,13 @@ void dfsCollect(int node, boolean[] visited, List<List<Integer>> reverseAdj, Lis
 - Forgetting to build the REVERSED graph for pass 2 — this is the entire trick of Kosaraju's; without it you just get connected components, not strongly connected ones.
 - Not popping in the correct stack order for pass 2.
 
+**Practice problems:**
+1. *(self-drill)* Strongly Connected Components — Kosaraju's (GfG classic) — implement the 2-pass DFS from the template above.
+2. *(self-drill)* Strongly Connected Components — Tarjan's (GfG classic) — implement the 1-pass low-link alternative and compare with Kosaraju's.
+3. [All Ancestors of a Node in a Directed Acyclic Graph](https://leetcode.com/problems/all-ancestors-of-a-node-in-a-directed-acyclic-graph/) — Medium
+4. *(self-drill)* SCC condensation — collapse each SCC into a super-node, build the resulting condensation DAG, and topologically sort it (combines patterns #4 + #15).
+5. *(self-drill)* Semi-connected graph check — for every pair (u, v), either u can reach v or v can reach u; solvable by condensing SCCs and checking the condensation DAG forms a simple path.
+
 ---
 
 ## 16. Grid as Implicit Graph
@@ -945,6 +1052,13 @@ for (int d = 0; d < 4; d++) {
 **Common bugs:**
 - Forgetting boundary checks before array access → `ArrayIndexOutOfBoundsException`.
 - 4-directional vs 8-directional confusion — read the problem carefully, this changes the `dx/dy` arrays.
+
+**Practice problems:**
+1. [Number of Islands](https://leetcode.com/problems/number-of-islands/) — Medium
+2. [Pacific Atlantic Water Flow](https://leetcode.com/problems/pacific-atlantic-water-flow/) — Medium
+3. [Number of Enclaves](https://leetcode.com/problems/number-of-enclaves/) — Medium
+4. [Shortest Bridge](https://leetcode.com/problems/shortest-bridge/) — Medium — combines DFS (find first island) + multi-source BFS (patterns #2 + #3), good capstone
+5. [Word Search](https://leetcode.com/problems/word-search/) — Medium
 
 ---
 
