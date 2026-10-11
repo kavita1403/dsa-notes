@@ -1,5 +1,7 @@
 # DSA Notes
 
+https://excel.cloud.microsoft/open/onedrive/?docId=A7B6A9CF0A626C60%21s015570384a3a475997663afcfc68d262&driveId=A7B6A9CF0A626C60
+
 Structured, pattern-first notes for SDE-2 interview prep — organized by *pattern*, not by individual problem, so they stay useful for revision long after the specific problem is forgotten.
 
 ## How to use this repo
